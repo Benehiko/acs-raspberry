@@ -2,6 +2,7 @@ from Properties.applicationproperties import AppProperties
 from backdrop.backdrop import Backdrop
 from CameraHandler.piCam import PiCam
 from CameraHandler.CameraProperties import CameraProperties
+from time import sleep
 
 
 class Octodaddy:
@@ -21,17 +22,19 @@ class Octodaddy:
 
     def run(self):
         while True:
-            pass
             #Check for light sensor
 
             #Do some camera stuff
             camera = PiCam(self.camera_properties)
-            images = camera.capture()
+            images = []
+            for x in range(0, 5):
+                tmp = camera.capture()
+                images.append(camera.capture())
             #Get images and pass them to backdrop
-            self.backdrop = Backdrop(self.app_properties, self)
-            self.backdrop.set_images(images=images)
-            self.backdrop.run()
+            backdrop = Backdrop(self.app_properties, self, images=images)
+            backdrop.run()
             self.backdrop_running = True
+            sleep(15)
 
     def notify_backdrop(self):
         self.backdrop_running = False

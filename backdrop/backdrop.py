@@ -11,7 +11,7 @@ from io import BytesIO
 
 class Backdrop(threading.Thread):
 
-    def __init__(self, app_properties, octodaddy):
+    def __init__(self, app_properties, octodaddy, images):
         threading.Thread.__init__(self)
         self.loop = None
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -22,11 +22,9 @@ class Backdrop(threading.Thread):
         self.no_network = app_properties.network_status()
         self.requestor = Request(app_properties.get_post_url())
 
-        self.images = None
+        self.images = images
         self.octodaddy = octodaddy
 
-    def set_images(self, images):
-        self.images = images
 
     def run(self):
         self.loop = asyncio.new_event_loop()
