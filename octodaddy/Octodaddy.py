@@ -10,7 +10,7 @@ class Octodaddy:
 
         if isinstance(app_properties, AppProperties):
             self.app_properties = app_properties
-            self.backdrop = Backdrop(app_properties, self)
+
         else:
             raise Exception("AppProperty type not found")
 
@@ -28,6 +28,7 @@ class Octodaddy:
             camera = PiCam(self.camera_properties)
             images = camera.capture()
             #Get images and pass them to backdrop
+            self.backdrop = Backdrop(self.app_properties, self)
             self.backdrop.set_images(images=images)
             self.backdrop.run()
             self.backdrop_running = True

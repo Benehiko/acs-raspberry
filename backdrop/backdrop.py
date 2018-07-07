@@ -35,10 +35,10 @@ class Backdrop(threading.Thread):
         #Check cache
         cached = self.check_cache()
         if len(cached) > 0:
-            tasks.append(asyncio.ensure_future(self.upload(cached)))
+            tasks.append(asyncio.ensure_future(self.upload(cached), loop=self.loop))
 
         images = self.images
-        tasks.append(asyncio.ensure_future(self.process(images)))
+        tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
         self.loop.run_until_complete(asyncio.gather(*tasks))
         self.octodaddy.notify_backdrop()
 
@@ -56,7 +56,7 @@ class Backdrop(threading.Thread):
                 tmp_img = Process.compress(image)
                 self.logger.info("Queueing image upload")
 
-            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self))
+            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
