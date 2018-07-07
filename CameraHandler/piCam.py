@@ -35,7 +35,7 @@ class PiCam(Camera):
         except Exception as e:
             self.logger.error("Camera error: %s", e)
         finally:
-            del rawCapture
+            rawCapture.truncate(0)
             return image
 
     @abstractmethod
