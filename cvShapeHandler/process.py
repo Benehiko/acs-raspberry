@@ -12,7 +12,7 @@ class Process:
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Captured image is rgb, convert to bgr
-        self.img = ImagePreProcessing.rgb2bgr(img)
+        self.img = img #ImagePreProcessing.rgb2bgr(img)
         self.imgShapeH = None
         self.draw_enable = draw_enable
         self.show_image = show_image
