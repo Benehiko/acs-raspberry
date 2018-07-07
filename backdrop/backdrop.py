@@ -85,4 +85,4 @@ class Backdrop(threading.Thread):
                 tmp.seek(0)
                 tmp_images.append(result)
 
-        asyncio.ensure_future(self.upload(tmp_images))
+        await self.upload(tmp_images)
