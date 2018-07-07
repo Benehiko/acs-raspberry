@@ -28,7 +28,7 @@ class PiCam(Camera):
         rawCapture = PiRGBArray(self.camera)
         try:
             #Changing between bgr -> rgb (although opencv wants bgr)
-            self.camera.capture(rawCapture, format="rgb", use_video_port=False)
+            self.camera.capture(rawCapture, format="bgr", use_video_port=False)
             image = rawCapture.array
 
             # print("Image size: ", image.nbytes/1024, "KB")
