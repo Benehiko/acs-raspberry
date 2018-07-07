@@ -19,6 +19,8 @@ class PiCam(Camera):
         self.camera_framerate = camera_properties.get_framerate()
 
         self.camera = picamera.PiCamera(sensor_mode=self.sensor, resolution=self.camera_resolution.value, framerate=self.camera_framerate)
+        self.adjust_camera()
+        self.test_drive()
 
     @abstractmethod
     def capture(self):
@@ -38,12 +40,16 @@ class PiCam(Camera):
 
     @abstractmethod
     def test_drive(self):
-        for x in range(0, 3):
-            self.capture()
-            sleep(1)
+        #Warm up the camera
+        sleep(10)
+        for x in range(0, 10):
+            img = self.capture()
+            del img
 
-    def adjust_camera(self, light_intensity):
+    def adjust_camera(self):
 
+        #Call the LDR here to check the light
+        light_intensity = 500000
         now = datetime.datetime.now()
         today6am = now.replace(hour=6, minute=0, second=0, microsecond=0)
         today5pm = now.replace(hour=17, minute=0, second=0, microsecond=0)
@@ -75,3 +81,6 @@ class PiCam(Camera):
             elif mode is "night":
                 self.camera.iso = 400
                 self.camera.shutter_speed = 1000000
+
+    def close_camera(self):
+        self.camera.close()

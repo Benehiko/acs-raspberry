@@ -1,5 +1,4 @@
 from cvShapeHandler.imageprocessing import ImagePreProcessing
-from logbook.logbook import Logbook
 
 import sys
 import numpy as np
