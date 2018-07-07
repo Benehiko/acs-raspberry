@@ -72,7 +72,7 @@ class Backdrop(threading.Thread):
             coros.append(p.process())
 
         results = await asyncio.gather(*coros)
-        print("Length of array before extracting None types: %d", len(results))
+        print("Length of array before extracting None types:", len(results))
         # results = [x for x in results if x is not None] # Keep element if it is not None
         tmp_images = []
         for result in results:

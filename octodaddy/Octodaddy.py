@@ -18,6 +18,7 @@ class Octodaddy:
         if isinstance(camera_properties, CameraProperties):
             self.camera_properties = camera_properties
 
+        self.camera = PiCam(self.camera_properties)
         self.backdrop_running = False
 
     def run(self):
@@ -25,11 +26,10 @@ class Octodaddy:
             #Check for light sensor
 
             #Do some camera stuff
-            camera = PiCam(self.camera_properties)
+
             images = []
             for x in range(0, 5):
-                tmp = camera.capture()
-                images.append(camera.capture())
+                images.append(self.camera.capture())
             #Get images and pass them to backdrop
             backdrop = Backdrop(self.app_properties, self, images=images)
             backdrop.run()
