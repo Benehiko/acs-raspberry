@@ -23,10 +23,11 @@ class Octodaddy:
 
     def run(self):
         while True:
-            #Check for light sensor
+            #Sameer enters check here for motion sensor
+            # TODO:
+            # ENTER THE MOTION DETECTION IF STATEMENT AND WRAP THE REST OF THE CODE IN IT
 
             #Do some camera stuff
-
             images = []
             for x in range(0, 5):
                 images.append(self.camera.capture())

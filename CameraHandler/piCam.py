@@ -30,6 +30,7 @@ class PiCam(Camera):
             #Changing between bgr -> rgb (although opencv wants bgr)
             self.camera.capture(rawCapture, format="bgr", use_video_port=False)
             image = rawCapture.array
+            print("Image captured...")
 
             # print("Image size: ", image.nbytes/1024, "KB")
         except Exception as e:
@@ -48,7 +49,8 @@ class PiCam(Camera):
 
     def adjust_camera(self):
 
-        #Call the LDR here to check the light
+        #TODO: Call the LDR here to check the light intensity
+
         light_intensity = 500000
         now = datetime.datetime.now()
         today6am = now.replace(hour=6, minute=0, second=0, microsecond=0)

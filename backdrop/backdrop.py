@@ -83,4 +83,5 @@ class Backdrop(threading.Thread):
                 tmp.seek(0)
                 tmp_images.append(result)
 
+        print("Length of array after extracting None types:", len(tmp_images))
         await self.upload(tmp_images)
