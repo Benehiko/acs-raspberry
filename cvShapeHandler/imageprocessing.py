@@ -10,6 +10,15 @@ class ImagePreProcessing:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     @staticmethod
+    def equaHist(img):
+        # The code commented below only equalises the whole image and not piece by piece. This creates noise.
+        # equ = cv2.equalizeHist(img)
+
+        clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+        result = clahe.apply(img)
+        return result
+
+    @staticmethod
     def tobinnary(img):
         try:
             ret, img_bin = cv2.threshold(img, 127, 255, 0)
@@ -32,9 +41,14 @@ class ImagePreProcessing:
         return cv2.calcHist([img],[0],None,[256],[0,256])
 
     @staticmethod
+    def adaptiveBinnary(img):
+        t = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        return t
+
+    @staticmethod
     def tocanny(img, low_threshold):
         try:
-            high_threshold = low_threshold * 3
+            high_threshold = low_threshold * 2
             img_canny = cv2.Canny(img, low_threshold, high_threshold)
         except Exception as e:
             logging.error(e)

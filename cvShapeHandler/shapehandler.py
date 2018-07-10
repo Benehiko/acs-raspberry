@@ -19,7 +19,13 @@ class ShapeHandler:
         img_grey = ImagePreProcessing.togrey(self.img)
         # self.logbook.info("Success on converting image to greyscale")
 
-        img_thresh = ImagePreProcessing.tobinnary(img_grey)
+        img_equ = ImagePreProcessing.equaHist(img_grey)
+
+        img_canny = ImagePreProcessing.tocanny(img_equ, 100)
+
+        img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
+
+        # img_thresh = ImagePreProcessing.tobinnary(img_grey)
         # self.logbook.info("Success on converting image to binary")
 
         # self.logbook.info("Finding contours...")
