@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from picamera.array import PiRGBArray
 from time import sleep
+<<<<<<< Updated upstream
+=======
+from CameraHandler.Camera import Camera
+>>>>>>> Stashed changes
 
 import logging
 import picamera.array
-import datetime
-
-from CameraHandler.Camera import Camera
 
 
 class PiCam(Camera):
@@ -19,7 +20,7 @@ class PiCam(Camera):
         self.camera_framerate = camera_properties.get_framerate()
 
         self.camera = picamera.PiCamera(sensor_mode=self.sensor, resolution=self.camera_resolution.value, framerate=self.camera_framerate)
-        self.adjust_camera()
+
         self.test_drive()
 
     @abstractmethod
@@ -47,9 +48,22 @@ class PiCam(Camera):
             img = self.capture()
             del img
 
-    def adjust_camera(self):
+    def adjust_camera(self, ldrValue):
+
+        lowLdr = 400
+        medLowLdr = 500
+        mediumLdr = 800
+        medHighLdr = 1000
+        highLdr = 1600
+
+        low = 25000
+        lowmed = 35000
+        med = 50000
+        medhigh = 70000
+        high = 100000000
 
         #TODO: Call the LDR here to check the light intensity
+<<<<<<< Updated upstream
 
         light_intensity = 500000
         now = datetime.datetime.now()
@@ -83,6 +97,40 @@ class PiCam(Camera):
             elif mode is "night":
                 self.camera.iso = 400
                 self.camera.shutter_speed = 1000000
+=======
+        if ldrValue < 1000:
+            self.camera.iso = lowLdr
+            self.camera.shutter_speed = low
+            print("isoValue : " + str(lowLdr))
+            print("Shutter Speed : " + str(low))
+            print("low")
+        elif ldrValue > 1000 and ldrValue < 3000:
+            self.camera.iso = medLowLdr
+            self.camera.shutter_speed = lowmed
+            print("isoValue : " + str(medLowLdr))
+            print("Shutter Speed : " + str(lowmed))
+            print("medlow")
+        elif ldrValue > 3000 and ldrValue < 6000:
+            self.camera.iso = mediumLdr
+            self.camera.shutter_speed = med
+            print("isoValue : " + str(mediumLdr))
+            print("Shutter Speed : " + str(med))
+            print("med")
+        elif ldrValue > 6000 and ldrValue < 10000:
+            self.camera.iso = medHighLdr
+            self.camera.shutter_speed = medhigh
+            print("isoValue : " + str(medHighLdr))
+            print("Shutter Speed : " + str(medhigh))
+            print("medhigh")
+        elif ldrValue > 10000:
+            self.camera.iso = highLdr
+            self.camera.shutter_speed = high
+            print("isoValue : " + str(highLdr))
+            print("Shutter Speed : " + str(high))
+            print("high")
+        print("ldrValue : " + str(ldrValue))
+        sleep(0.2)
+>>>>>>> Stashed changes
 
     def close_camera(self):
         self.camera.close()

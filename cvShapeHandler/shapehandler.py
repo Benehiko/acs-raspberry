@@ -1,6 +1,6 @@
 from cvShapeHandler.imageprocessing import ImagePreProcessing
 
-import sys
+import logging
 import numpy as np
 import cv2
 
@@ -8,13 +8,13 @@ import cv2
 class ShapeHandler:
 
     def __init__(self, img):
-        # self.logbook = Logbook(self.__class__.__name__, 'cvShapeHandler')
+        self.logger = logging.getLogger(self.__class__.__name__)
 
         self.img = img
         self.contours = None
 
     def findcontours(self):
-        # self.logbook.info("Inside findcontours Contours...")
+
         # Pre-process image
         img_grey = ImagePreProcessing.togrey(self.img)
         # self.logbook.info("Success on converting image to greyscale")
@@ -24,13 +24,14 @@ class ShapeHandler:
         img_canny = ImagePreProcessing.tocanny(img_equ, 100)
 
         img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
+<<<<<<< Updated upstream
 
         # img_thresh = ImagePreProcessing.tobinnary(img_grey)
         # self.logbook.info("Success on converting image to binary")
+=======
+>>>>>>> Stashed changes
 
-        # self.logbook.info("Finding contours...")
         image, contours, hierarchy = cv2.findContours(img_thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        # self.logbook.info("Contours found: " + str(len(contours)))
 
         self.contours = contours
         # cnts = contours[0] if imutils.is_cv2() else contours[1]
@@ -39,7 +40,6 @@ class ShapeHandler:
     def getRectangles(self, contours):
         arrrect = []
         imgArea = self.getArea()
-        # self.logbook.info("Image Area is: " + str(imgArea))
 
         approxCounter = 0
         for cnt in contours:
@@ -64,6 +64,7 @@ class ShapeHandler:
             return box == tmp
 
     def getArea(self):
+        print("DEBUG: Getting img area with shape property")
         imgHeight, imgWidth, imgChannels = self.img.shape
         imgArea = (imgHeight) * (imgWidth)
         return imgArea

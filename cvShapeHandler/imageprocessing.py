@@ -10,6 +10,31 @@ class ImagePreProcessing:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     @staticmethod
+<<<<<<< Updated upstream
+=======
+    def crop(img, roi):
+        rectangles = roi["rectangles"]
+        for rect in rectangles:
+            roi_x = rect[0][0] * 1.05
+            roi_y = rect[0][1] * 1.05
+
+            roi_x2 = rect[1][0] * 1.05
+            roi_y2 = rect[1][1] * 1.05
+            roi_x3 = rect[2][0] * 1.05
+            roi_y3 = rect[2][1] * 1.05
+            roi_x4 = rect[3][0] * 1.05
+            roi_y4 = rect[3][1] * 1.05
+
+        # Increase roi by 5%
+        roi_x = (roi_x * 1.05)
+        roi
+        #if roi_x in img.shape[1]:
+
+
+
+
+    @staticmethod
+>>>>>>> Stashed changes
     def equaHist(img):
         # The code commented below only equalises the whole image and not piece by piece. This creates noise.
         # equ = cv2.equalizeHist(img)
@@ -83,6 +108,7 @@ class ImagePreProcessing:
     @staticmethod
     def cv_resize_compress(img, max_w=1640, max_h=1232, quality=80):
         try:
+            print("DEBUG: resize the image...using shape")
             img_h = img.shape[0]
             img_w = img.shape[1]
             new_h = img_h
@@ -119,7 +145,12 @@ class ImagePreProcessing:
         bytes = cv2.imencode('.jpg', img)[1].tostring()
         return bytes
 
+<<<<<<< Updated upstream
     def save(self, img):
+=======
+    @staticmethod
+    def save(img):
+>>>>>>> Stashed changes
         pathlib.Path('images').mkdir(parents=False, exist_ok=True)
         if img is not None:
             print("Saving image of", img.nbytes/10000000, "MB")
