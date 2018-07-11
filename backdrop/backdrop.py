@@ -53,12 +53,12 @@ class Backdrop(threading.Thread):
         if len(images) > 0:
             tmp_img = []
             for image in images:
-                tmp = Process.compress(image)
-                image = Image.fromarray(tmp)
+                nparray = Process.compress(image)
+                image = Image.fromarray(nparray)
                 tmp = BytesIO()
                 image.save(tmp, "JPEG")
                 tmp.seek(0)
-                tmp_img.append(image)
+                tmp_img.append(tmp)
 
                 self.logger.info("Queueing image upload")
             asyncio.ensure_future(self.requestor.upload_data(tmp_img, self, timestamp), loop=self.loop)

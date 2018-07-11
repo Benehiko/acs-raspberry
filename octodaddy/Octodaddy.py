@@ -26,14 +26,12 @@ class Octodaddy:
         self.camera = PiCam(self.camera_properties)
         self.backdrop_running = False
 
-    def run(self):
-
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
+        self.pinpir = 22
+        GPIO.setup(self.pinpir, GPIO.IN)
 
-        pinpir = 22
-
-        GPIO.setup(pinpir, GPIO.IN)
+    def run(self):
 
         while True:
 
@@ -45,7 +43,7 @@ class Octodaddy:
             try:
                 print('waiting for pir to settle...')
                 # Loop until PIR output is 0
-                while GPIO.input(pinpir) == 1:
+                while GPIO.input(self.pinpir) == 1:
                     currentstate = 0
 
                 print("    ready")
@@ -53,7 +51,7 @@ class Octodaddy:
                 while True:
                     # Read PIR state
 
-                    currentstate = GPIO.input(pinpir)
+                    currentstate = GPIO.input(self.pinpir)
 
                     # If PIR is triggered
                     if currentstate == 1 and previousstate == 0:

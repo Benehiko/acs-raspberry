@@ -124,7 +124,7 @@ class ImagePreProcessing:
             dist_size = (new_w, new_h)
             print("New size:", str(dist_size))
             resized = cv2.resize(img, dist_size, interpolation=cv2.INTER_AREA)
-            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 85]
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), quality]
             
             retval, buf = cv2.imencode('.jpg', resized, encode_param)
             return cv2.imdecode(buf, 1) #Flag 1 since it's colour
