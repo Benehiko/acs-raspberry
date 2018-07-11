@@ -31,7 +31,7 @@ class Backdrop(threading.Thread):
         self.loop = asyncio.new_event_loop()
         tasks = []
 
-        #Check cache
+        # Check cache
         cached = self.check_cache()
         if len(cached) > 0:
             timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -53,10 +53,18 @@ class Backdrop(threading.Thread):
         if len(images) > 0:
             tmp_img = []
             for image in images:
-                tmp_img = Process.compress(image)
-                self.logger.info("Queueing image upload")
+                tmp_img.append(Process.compress(image))
 
-            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self, timestamp), loop=self.loop)
+                self.logger.info("Queueing image upload")
+                tmp_images = []
+                for result in tmp_img:
+                    image = Image.fromarray(result)
+                    tmp = BytesIO()
+                    image.save(tmp, "JPEG")
+                    tmp.seek(0)
+                    tmp_images.append(result)
+
+            asyncio.ensure_future(self.requestor.upload_data(tmp_images, self, timestamp), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
@@ -77,15 +85,13 @@ class Backdrop(threading.Thread):
         results = await asyncio.gather(*coros)
         print("Length of array before extracting None types:", len(results))
         # results = [x for x in results if x is not None] # Keep element if it is not None
-        tmp_images = []
+
+        tmp = []
         for result in results:
             if result is not False:
-                image = Image.fromarray(result)
-                tmp = BytesIO()
-                image.save(tmp, "JPEG")
-                tmp.seek(0)
-                tmp_images.append(result)
+                tmp.append(result)
 
-        print("Length of array after extracting None types:", len(tmp_images))
+        del results
+        print("Length of array after extracting None types:", len(tmp))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await self.upload(tmp_images, timestamp)
+        await self.upload(tmp, timestamp)
