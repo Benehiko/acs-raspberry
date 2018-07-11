@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 from picamera.array import PiRGBArray
 from time import sleep
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+from CameraHandler.Camera import Camera
+>>>>>>> Stashed changes
 =======
 from CameraHandler.Camera import Camera
 >>>>>>> Stashed changes
@@ -49,6 +53,7 @@ class PiCam(Camera):
             del img
 
     def adjust_camera(self, ldrValue):
+<<<<<<< Updated upstream
 
         lowLdr = 400
         medLowLdr = 500
@@ -98,6 +103,22 @@ class PiCam(Camera):
                 self.camera.iso = 400
                 self.camera.shutter_speed = 1000000
 =======
+=======
+
+        lowLdr = 400
+        medLowLdr = 500
+        mediumLdr = 800
+        medHighLdr = 1000
+        highLdr = 1600
+
+        low = 25000
+        lowmed = 35000
+        med = 50000
+        medhigh = 70000
+        high = 100000000
+
+        #TODO: Call the LDR here to check the light intensity
+>>>>>>> Stashed changes
         if ldrValue < 1000:
             self.camera.iso = lowLdr
             self.camera.shutter_speed = low
@@ -130,6 +151,9 @@ class PiCam(Camera):
             print("high")
         print("ldrValue : " + str(ldrValue))
         sleep(0.2)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     def close_camera(self):

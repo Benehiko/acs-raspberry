@@ -4,12 +4,18 @@ from CameraHandler.piCam import PiCam
 from CameraHandler.CameraProperties import CameraProperties
 from time import sleep
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 from Sensors.ldrTest import ldr
 from Sensors.ledFlash import flashLight
 
 import RPi.GPIO as GPIO
 import time
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 
@@ -40,6 +46,7 @@ class Octodaddy:
 
         while True:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             #Sameer enters check here for motion sensor
             # TODO:
             # ENTER THE MOTION DETECTION IF STATEMENT AND WRAP THE REST OF THE CODE IN IT
@@ -54,6 +61,8 @@ class Octodaddy:
             self.backdrop_running = True
             sleep(15)
 =======
+=======
+>>>>>>> Stashed changes
 
             # Loops through the sensor infinitely to check for motion, once detected, set iso and shutter and capture images
 
@@ -102,6 +111,9 @@ class Octodaddy:
             except KeyboardInterrupt:
                 print("     Quit")
                 GPIO.cleanup()
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     def notify_backdrop(self):

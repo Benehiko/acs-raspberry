@@ -11,7 +11,10 @@ class ImagePreProcessing:
 
     @staticmethod
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     def crop(img, roi):
         rectangles = roi["rectangles"]
         for rect in rectangles:
@@ -34,6 +37,9 @@ class ImagePreProcessing:
 
 
     @staticmethod
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     def equaHist(img):
         # The code commented below only equalises the whole image and not piece by piece. This creates noise.
@@ -146,7 +152,12 @@ class ImagePreProcessing:
         return bytes
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     def save(self, img):
+=======
+    @staticmethod
+    def save(img):
+>>>>>>> Stashed changes
 =======
     @staticmethod
     def save(img):
@@ -160,7 +171,7 @@ class ImagePreProcessing:
                 filename = datetime.datetime.now().strftime("%Y-%m-%d-%H_%M_%S")
                 cv2.imwrite('images/'+filename+'.jpg', tmp)
             except Exception as e:
-                self.logger.error(e)
+                logging.error(e)
 
     @staticmethod
     def rgb2bgr(img):
