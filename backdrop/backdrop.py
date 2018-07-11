@@ -1,12 +1,14 @@
 from cvShapeHandler.process import Process
 from requestor.requestor import Request
 from PIL import Image
+from io import BytesIO
 
 import threading
 import logging
 import asyncio
 import glob
-from io import BytesIO
+import os
+import datetime
 
 
 class Backdrop(threading.Thread):
@@ -25,7 +27,6 @@ class Backdrop(threading.Thread):
         self.images = images
         self.octodaddy = octodaddy
 
-
     def run(self):
         self.loop = asyncio.new_event_loop()
         tasks = []
@@ -33,7 +34,8 @@ class Backdrop(threading.Thread):
         #Check cache
         cached = self.check_cache()
         if len(cached) > 0:
-            tasks.append(asyncio.ensure_future(self.upload(cached), loop=self.loop))
+            timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            tasks.append(asyncio.ensure_future(self.upload(cached, timestamp), loop=self.loop))
 
         images = self.images
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
@@ -47,14 +49,14 @@ class Backdrop(threading.Thread):
                 p.save()
                 del p
 
-    async def upload(self, images):
+    async def upload(self, images, timestamp):
         if len(images) > 0:
             tmp_img = []
             for image in images:
                 tmp_img = Process.compress(image)
                 self.logger.info("Queueing image upload")
 
-            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self), loop=self.loop)
+            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self, timestamp), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
@@ -63,6 +65,7 @@ class Backdrop(threading.Thread):
             with open(image, 'rb') as file:
                 image = Image.open(file)
                 cached_images.append(image)
+                os.remove(image)
         return cached_images
 
     async def process(self, images):
@@ -84,4 +87,5 @@ class Backdrop(threading.Thread):
                 tmp_images.append(result)
 
         print("Length of array after extracting None types:", len(tmp_images))
-        await self.upload(tmp_images)
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        await self.upload(tmp_images, timestamp)

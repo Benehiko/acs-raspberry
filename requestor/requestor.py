@@ -2,6 +2,7 @@ import netifaces
 import requests
 import logging
 import socket
+import datetime
 
 
 class Request:
@@ -13,20 +14,22 @@ class Request:
         self.logger = logging.getLogger(__name__)
 
     # http://docs.python-requests.org/en/latest/user/advanced/#post-multiple-multipart-encoded-files
-    async def upload_data(self, multiple_files, backdrop):
-        if not self.check_connectivity():
-            self.logger.debug("Internet may be down...caching all images just in case for later.")
-            backdrop.cache(multiple_files)
-            return
+    async def upload_data(self, multiple_files, backdrop, timestamp):
+        if len(multiple_files) > 0:
+            if not self.check_connectivity():
+                self.logger.debug("Internet may be down...caching all images just in case for later.")
+                backdrop.cache(multiple_files)
+                return
 
-        try:
-            self.logger.info("Trying image upload...")
-            data = [('mac', self.mac)]
-            for file in multiple_files:
-                data.append(('images', file, 'image/png'))
-            return self.post(data)
-        except Exception as e:
-            self.logger.error("Error uploading image: %s", e)
+            try:
+                self.logger.info("Trying image upload...")
+                data = [('mac', self.mac), ('timestamp', timestamp)]
+                for file in multiple_files:
+                    data.append(('images', file))
+                return self.post(data)
+            except Exception as e:
+                self.logger.error("Error uploading image: %s", e)
+        return
 
     def post(self, data):
         try:
