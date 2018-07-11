@@ -51,17 +51,8 @@ class Backdrop(threading.Thread):
 
     async def upload(self, images, timestamp):
         if len(images) > 0:
-            tmp_img = []
-            for image in images:
-                nparray = Process.compress(image)
-                image = Image.fromarray(nparray)
-                tmp = BytesIO()
-                image.save(tmp, "JPEG")
-                tmp.seek(0)
-                tmp_img.append(tmp)
-
-                self.logger.info("Queueing image upload")
-            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self, timestamp), loop=self.loop)
+            self.logger.info("Queueing image upload")
+            asyncio.ensure_future(self.requestor.upload_data(images, self, timestamp), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
