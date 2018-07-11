@@ -1,14 +1,7 @@
 from abc import ABC, abstractmethod
 from picamera.array import PiRGBArray
 from time import sleep
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
 from CameraHandler.Camera import Camera
->>>>>>> Stashed changes
-=======
-from CameraHandler.Camera import Camera
->>>>>>> Stashed changes
 
 import logging
 import picamera.array
@@ -53,7 +46,6 @@ class PiCam(Camera):
             del img
 
     def adjust_camera(self, ldrValue):
-<<<<<<< Updated upstream
 
         lowLdr = 400
         medLowLdr = 500
@@ -68,57 +60,6 @@ class PiCam(Camera):
         high = 100000000
 
         #TODO: Call the LDR here to check the light intensity
-<<<<<<< Updated upstream
-
-        light_intensity = 500000
-        now = datetime.datetime.now()
-        today6am = now.replace(hour=6, minute=0, second=0, microsecond=0)
-        today5pm = now.replace(hour=17, minute=0, second=0, microsecond=0)
-
-
-        mode = None
-        if now < today6am or now > today5pm:
-            print("Entering low light mode")
-            self.camera.shutter_speed = 1500000
-            self.camera.iso = 800
-            mode = "night"
-        else:
-            print("Day mode")
-            self.camera.shutter_speed = 800000
-            self.camera.iso = 100
-            mode = "day"
-
-        # Stepping up from night mode (worst case to best case with light)
-        if light_intensity in range(260000, 7000000):
-            # Light is low (florescent or moonlight)
-            # Set the camera to capture more light into the lense
-            self.camera.iso = 1000
-            self.camera.shutter_speed = 2500000
-
-        elif light_intensity >= 12000000:
-            if mode is "day":
-                self.camera.iso = 50
-                self.camera.shutter_speed = 500000
-            elif mode is "night":
-                self.camera.iso = 400
-                self.camera.shutter_speed = 1000000
-=======
-=======
-
-        lowLdr = 400
-        medLowLdr = 500
-        mediumLdr = 800
-        medHighLdr = 1000
-        highLdr = 1600
-
-        low = 25000
-        lowmed = 35000
-        med = 50000
-        medhigh = 70000
-        high = 100000000
-
-        #TODO: Call the LDR here to check the light intensity
->>>>>>> Stashed changes
         if ldrValue < 1000:
             self.camera.iso = lowLdr
             self.camera.shutter_speed = low
@@ -151,10 +92,6 @@ class PiCam(Camera):
             print("high")
         print("ldrValue : " + str(ldrValue))
         sleep(0.2)
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
     def close_camera(self):
         self.camera.close()

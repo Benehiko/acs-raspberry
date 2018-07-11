@@ -26,14 +26,6 @@ class ShapeHandler:
         img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
 <<<<<<< Updated upstream
 
-<<<<<<< Updated upstream
-        # img_thresh = ImagePreProcessing.tobinnary(img_grey)
-        # self.logbook.info("Success on converting image to binary")
-=======
->>>>>>> Stashed changes
-
-=======
->>>>>>> Stashed changes
         image, contours, hierarchy = cv2.findContours(img_thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
         self.contours = contours

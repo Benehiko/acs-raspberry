@@ -5,14 +5,7 @@ from cvShapeHandler.imagedisplay import ImageDisplay
 from cvShapeHandler.numpyencoder import NumpyEncoder
 
 import logging
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
 import json
->>>>>>> Stashed changes
-=======
-import json
->>>>>>> Stashed changes
 
 
 class Process:
