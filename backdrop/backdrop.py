@@ -65,7 +65,7 @@ class Backdrop(threading.Thread):
             with open(image, 'rb') as file:
                 image = Image.open(file)
                 cached_images.append(image)
-                os.remove(image)
+                # os.remove(image)
         return cached_images
 
     async def process(self, images):

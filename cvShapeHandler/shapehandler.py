@@ -17,14 +17,13 @@ class ShapeHandler:
 
         # Pre-process image
         img_grey = ImagePreProcessing.togrey(self.img)
-        # self.logbook.info("Success on converting image to greyscale")
+
 
         img_equ = ImagePreProcessing.equaHist(img_grey)
 
         img_canny = ImagePreProcessing.tocanny(img_equ, 100)
 
         img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
-<<<<<<< Updated upstream
 
         image, contours, hierarchy = cv2.findContours(img_thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 

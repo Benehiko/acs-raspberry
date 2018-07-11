@@ -10,11 +10,6 @@ class ImagePreProcessing:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     @staticmethod
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     def crop(img, roi):
         rectangles = roi["rectangles"]
         for rect in rectangles:
@@ -37,10 +32,6 @@ class ImagePreProcessing:
 
 
     @staticmethod
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     def equaHist(img):
         # The code commented below only equalises the whole image and not piece by piece. This creates noise.
         # equ = cv2.equalizeHist(img)
@@ -151,17 +142,8 @@ class ImagePreProcessing:
         bytes = cv2.imencode('.jpg', img)[1].tostring()
         return bytes
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    def save(self, img):
-=======
     @staticmethod
     def save(img):
->>>>>>> Stashed changes
-=======
-    @staticmethod
-    def save(img):
->>>>>>> Stashed changes
         pathlib.Path('images').mkdir(parents=False, exist_ok=True)
         if img is not None:
             print("Saving image of", img.nbytes/10000000, "MB")
