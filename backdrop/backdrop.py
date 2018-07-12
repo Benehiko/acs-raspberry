@@ -43,7 +43,7 @@ class Backdrop(threading.Thread):
             self.cache(images)
 
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
-        self.loop.run_until_complete(asyncio.gather(*tasks))
+        self.loop.run_until_complete(asyncio.gather(*tasks, loop=self.loop))
         self.octodaddy.notify_backdrop()
 
     def cache(self, images):
@@ -74,16 +74,10 @@ class Backdrop(threading.Thread):
             p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, resize=False)
             coros.append(p.process())
 
-        results = await asyncio.gather(*coros)
+        results = await asyncio.gather(*coros, loop=self.loop)
         print("Length of array before extracting None types:", len(results))
-        # results = [x for x in results if x is not False] # Keep element if it is not False
+        results = [x for x in results if x is not False] # Keep element if it is not False
 
-        tmp = []
-        for result in results:
-            if result is not False:
-                tmp.append(result)
-
-        del results
-        print("Length of array after extracting None types:", len(tmp))
+        print("Length of array after extracting None types:", len(results))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await self.upload(tmp, timestamp)
+        await self.upload(results, timestamp)

@@ -70,37 +70,45 @@ class ImagePreProcessing:
     @staticmethod
     def tocanny(img, low_threshold):
         try:
-            high_threshold = low_threshold * 2
+            high_threshold = low_threshold * 3
             img_canny = cv2.Canny(img, low_threshold, high_threshold)
+            return img_canny
         except Exception as e:
             logging.error(e)
-        return img_canny
+
 
     @staticmethod
     def denoise(img, intensity, search_window, block_size):
         try:
             denoise = cv2.fastNlMeansDenoising(img, intensity, search_window, block_size)
             #Usually searchWindows is 21 and blockSize is 7
+            return denoise
         except Exception as e:
             logging.error(e)
-        return denoise
+            return None
+
 
     @staticmethod
     def blur(img, kernel_size=5, sigMaxX=0, sigMaxY=0):
         try:
             ksize = (kernel_size, kernel_size)
             blur = cv2.GaussianBlur(img, ksize, sigMaxX, sigMaxY)
+            return blur
         except Exception as e:
             logging.error(e)
-        return blur
+            return None
+
 
     @staticmethod
     def resize(img, newwidth):
         try:
             resized = imutils.resize(img, width=newwidth)
+            return resized
+
         except Exception as e:
             logging.error(e)
-        return resized
+            return None
+
 
     @staticmethod
     def cv_resize_compress(img, max_w=1640, max_h=1232, quality=80):
@@ -131,6 +139,7 @@ class ImagePreProcessing:
             
         except Exception as e:
             logging.error(e)
+            return None
 
     @staticmethod
     def create_img(size):
@@ -151,7 +160,10 @@ class ImagePreProcessing:
                 tmp = ImagePreProcessing.cv_resize_compress(img)
                 tmp = ImagePreProcessing.bgr2rgb(tmp)
                 filename = datetime.datetime.now().strftime("%Y-%m-%d-%H_%M_%S")
-                cv2.imwrite('images/'+filename+'.jpg', tmp)
+                if tmp is not None:
+                    cv2.imwrite('images/'+filename+'.jpg', tmp)
+                else:
+                    print("Could not save none type")
             except Exception as e:
                 logging.error(e)
 
