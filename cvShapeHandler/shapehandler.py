@@ -16,14 +16,21 @@ class ShapeHandler:
     def findcontours(self):
 
         # Pre-process image
+        # NEW CODE
+
+        # img_grey = ImagePreProcessing.togrey(self.img)
+        #
+        #
+        # img_equ = ImagePreProcessing.equaHist(img_grey)
+        #
+        # img_canny = ImagePreProcessing.tocanny(img_equ, 100)
+        #
+        # img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
+
+        # OLD CODE
         img_grey = ImagePreProcessing.togrey(self.img)
 
-
-        img_equ = ImagePreProcessing.equaHist(img_grey)
-
-        img_canny = ImagePreProcessing.tocanny(img_equ, 100)
-
-        img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
+        img_thresh = ImagePreProcessing.tobinnary(img_grey)
 
         image, contours, hierarchy = cv2.findContours(img_thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -48,7 +55,7 @@ class ShapeHandler:
                     box = cv2.boxPoints(rect)
                     box = np.int0(box)
                     percentage = (area * 100) / imgArea
-                    if percentage > 0.2:
+                    if 0.2 < percentage < 10:
                         arrrect.append(box)
 
         return arrrect
