@@ -27,7 +27,7 @@ class PiCam(Camera):
         rawCapture = PiRGBArray(self.camera)
         try:
             #Changing between bgr -> rgb (although opencv wants bgr)
-            self.camera.capture(rawCapture, format="rgb", use_video_port=False)
+            self.camera.capture(rawCapture, format="bgr", use_video_port=False)
             image = rawCapture.array
             print("Image captured...")
             print("Current exposure_speed: ", self.camera.exposure_speed)
@@ -77,10 +77,11 @@ class PiCam(Camera):
             print("medlow")
         elif ldrValue >= 3000 and ldrValue <= 6000:
             self.camera.iso = mediumLdr
+            self.camera.exposure_compensation = 15
+
             # self.camera.shutter_speed = med
             print("isoValue : " + str(mediumLdr))
             print("Shutter Speed : " + str(med))
-            print("med")
         elif ldrValue >= 6000 and ldrValue <= 10000:
             self.camera.iso = medHighLdr
             # self.camera.shutter_speed = medhigh
