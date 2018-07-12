@@ -8,7 +8,7 @@ from Sensors.ledFlash import flashLight
 
 import RPi.GPIO as GPIO
 import time
-
+import sys
 
 class Octodaddy:
 
@@ -85,6 +85,7 @@ class Octodaddy:
 
             except KeyboardInterrupt:
                 print("     Quit")
+                sys.exit(0)
                 #GPIO.cleanup()
 
     def notify_backdrop(self):
