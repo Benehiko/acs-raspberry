@@ -29,7 +29,7 @@ class PiCam(Camera):
             self.camera.capture(rawCapture, format="rgb", use_video_port=False)
             image = rawCapture.array
             print("Image captured...")
-            rawCapture.truncate(0)
+            #rawCapture.truncate(0)
             return image
             # print("Image size: ", image.nbytes/1024, "KB")
         except Exception as e:
@@ -38,10 +38,13 @@ class PiCam(Camera):
     @abstractmethod
     def test_drive(self):
         #Warm up the camera
-        sleep(10)
+        print("Warming up camera")
+        sleep(2)
         for x in range(0, 10):
             img = self.capture()
+            sleep(0.2)
             del img
+        sleep(5)
 
     def adjust_camera(self, ldrValue):
 
@@ -89,7 +92,7 @@ class PiCam(Camera):
             print("Shutter Speed : " + str(high))
             print("high")
         print("ldrValue : " + str(ldrValue))
-        sleep(0.2)
+        sleep(0.5)
 
     def close_camera(self):
         self.camera.close()

@@ -60,7 +60,7 @@ class Octodaddy:
                         print("motion detected")
                         # flashLight._flashLight()
                         # setting iso and shutterspeed
-                        ldrValue = 3100  # ldr.readldr()
+                        ldrValue = 10000  # ldr.readldr()
                         self.camera.adjust_camera(ldrValue)
 
                         images = []
