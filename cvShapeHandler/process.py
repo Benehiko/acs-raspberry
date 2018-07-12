@@ -10,7 +10,7 @@ import json
 
 class Process:
 
-    def __init__(self, img, resize=False, draw_enable=False, show_image=False, capture_handler=None):
+    def __init__(self, img, resize=False, draw_enable=False, show_image=False):
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Captured image is rgb, convert to bgr
@@ -19,7 +19,6 @@ class Process:
         self.draw_enable = draw_enable
         self.show_image = show_image
         self.resize = resize
-        self.capture_handler = capture_handler
 
     async def process(self):
         # Resize image
@@ -40,14 +39,14 @@ class Process:
                         img = ImageDraw.draw(img, rectangles, "Green", 10)
                     except Exception as e:
                         self.logger.error(e)
-                    self.save(image=img)
+                    self.save("drawn", image=img)
                     if self.show_image:
                         ImageDisplay.display(img)
 
                 # self.overlay_handler(rectangles)
                 print("Image has rectangles!")
-                jrect = self.rectangle2json(rectangles)
-                img_list = ImagePreProcessing.crop(self.img, jrect)
+                # jrect = self.rectangle2json(rectangles)
+                # img_list = ImagePreProcessing.crop(self.img, jrect)
                 return self.img
 
         return False
@@ -72,14 +71,14 @@ class Process:
         res = ImagePreProcessing.cv_resize_compress(res, max_w=1280, max_h=960)
         height, width, channels = res.shape
         b = ImagePreProcessing.convert_img2bytes(res)
-        self.capture_handler.add_overlay(img_bytes=b, size=(width, height))
+        # self.capture_handler.add_overlay(img_bytes=b, size=(width, height))
 
-    def save(self, image=None):
+    def save(self, path, image=None):
         try:
             if image is not None:
-                ImagePreProcessing.save(image)
+                ImagePreProcessing.save(image, path)
             else:
-                ImagePreProcessing.save(self.img)
+                ImagePreProcessing.save(self.img, path)
         except Exception as e:
             self.logger.error(e)
 
@@ -103,6 +102,13 @@ class Process:
         except Exception as e:
             logging.error(e)
 
+    @staticmethod
+    def rgb2bgr(image):
+        try:
+            if image is not None:
+                return ImagePreProcessing.rgb2bgr(image)
+        except Exception as e:
+            logging.error(e)
     @staticmethod
     def create_transparent_img(size=(960, 1280)):
         return ImagePreProcessing.create_img(size=size)  # Opencv prefers Height and then Width thus (h,w)

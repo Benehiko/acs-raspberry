@@ -18,19 +18,19 @@ class ShapeHandler:
         # Pre-process image
         # NEW CODE
 
-        # img_grey = ImagePreProcessing.togrey(self.img)
-        #
-        #
-        # img_equ = ImagePreProcessing.equaHist(img_grey)
-        #
-        # img_canny = ImagePreProcessing.tocanny(img_equ, 100)
-        #
-        # img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
-
-        # OLD CODE
         img_grey = ImagePreProcessing.togrey(self.img)
 
-        img_thresh = ImagePreProcessing.tobinnary(img_grey)
+
+        img_equ = ImagePreProcessing.equaHist(img_grey)
+
+        img_canny = ImagePreProcessing.tocanny(img_equ, 100)
+
+        img_thresh = ImagePreProcessing.adaptiveBinnary(img_canny)
+
+        # OLD CODE
+        # img_grey = ImagePreProcessing.togrey(self.img)
+        #
+        # img_thresh = ImagePreProcessing.tobinnary(img_grey)
 
         image, contours, hierarchy = cv2.findContours(img_thresh.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -42,22 +42,16 @@ class ShapeHandler:
         arrrect = []
         imgArea = self.getArea()
 
-        approxCounter = 0
         for cnt in contours:
-            peri = cv2.arcLength(cnt, True)
-            approx = cv2.approxPolyDP(cnt, 0.04 * peri, True)
-            approxCounter += 1
-
-            if len(approx) == 4:
-                area = cv2.contourArea(cnt)
-                if area > 0:
-                    rect = cv2.minAreaRect(cnt)
-                    box = cv2.boxPoints(rect)
-                    box = np.int0(box)
-                    percentage = (area * 100) / imgArea
-                    if 0.2 < percentage < 10:
-                        arrrect.append(box)
-
+            epsilon = 0.01 * cv2.arcLength(cnt, False)
+            approx = cv2.approxPolyDP(cnt, epsilon, False)
+            area = cv2.contourArea(approx)
+            rect = cv2.minAreaRect(approx)
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            percentage = (area * 100) / imgArea
+            if 0.2 < percentage < 20:
+                arrrect.append(box)
         return arrrect
 
     def isDuplicate(self, arrrect, box):

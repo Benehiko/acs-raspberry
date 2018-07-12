@@ -7,7 +7,9 @@ from Sensors.ldrTest import ldr
 from Sensors.ledFlash import flashLight
 
 import RPi.GPIO as GPIO
+
 import time
+import sys
 
 
 class Octodaddy:
@@ -57,19 +59,21 @@ class Octodaddy:
                     if currentstate == 1 and previousstate == 0:
                         print("motion detected")
                         flashLight._flashLight()
+
                         # setting iso and shutterspeed
                         ldrValue = ldr.readldr()
+
                         self.camera.adjust_camera(ldrValue)
 
                         images = []
                         for x in range(0, 5):
                             images.append(self.camera.capture())
+                            sleep(0.3)
 
                         # Get images and pass them to backdrop
                         backdrop = Backdrop(self.app_properties, self, images=images)
                         backdrop.start()
                         self.backdrop_running = True
-                        sleep(5)
                         # record previous state of motion detector
                         previousstate = 1
                     # If the PIR has returned to ready state
@@ -77,11 +81,13 @@ class Octodaddy:
                         print("     ready")
                         previousstate = 0
 
-                    time.sleep(0.01)
+                    time.sleep(5)
 
             except KeyboardInterrupt:
                 print("     Quit")
                 GPIO.cleanup()
+                sys.exit(0)
+
 
     def notify_backdrop(self):
         self.backdrop_running = False

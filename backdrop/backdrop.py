@@ -25,6 +25,9 @@ class Backdrop(threading.Thread):
         self.requestor = Request(app_properties.get_post_url())
 
         self.images = images
+        # for tmp in images:
+        #     self.images.append(Process.rgb2bgr(tmp))
+
         self.octodaddy = octodaddy
 
     def run(self):
@@ -38,25 +41,29 @@ class Backdrop(threading.Thread):
             tasks.append(asyncio.ensure_future(self.upload(cached, timestamp), loop=self.loop))
 
         images = self.images
+
+        if self.always_save:
+            self.cache(images)
+
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
-        self.loop.run_until_complete(asyncio.gather(*tasks))
+        self.loop.run_until_complete(asyncio.gather(*tasks, loop=self.loop))
         self.octodaddy.notify_backdrop()
 
     def cache(self, images):
         if len(images) > 0:
             for image in images:
                 p = Process(img=image, resize=False, draw_enable=self.save_drawn, show_image=self.show_drawn)
-                p.save()
+                p.save("cache")
                 del p
 
     async def upload(self, images, timestamp):
-        if len(images) > 0:
+        if len(images) > 0 and not self.no_network:
             self.logger.info("Queueing image upload")
             asyncio.ensure_future(self.requestor.upload_data(images, self, timestamp), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
-        images = glob.glob("images/*.jpg")
+        images = glob.glob("cache/*.jpg")
         for image in images:
             with open(image, 'rb') as file:
                 image = Image.open(file)
@@ -67,19 +74,12 @@ class Backdrop(threading.Thread):
     async def process(self, images):
         coros = []
         for image in images:
-            p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, capture_handler=self)
+            p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, resize=False)
             coros.append(p.process())
 
-        results = await asyncio.gather(*coros)
+        results = await asyncio.gather(*coros, loop=self.loop)
         print("Length of array before extracting None types:", len(results))
         results = [x for x in results if x is not False] # Keep element if it is not False
-
-        # tmp = []
-        # for result in results:
-        #     if result is not False:
-        #         tmp.append(result)
-
-        # del results
 
         print("Length of array after extracting None types:", len(results))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
