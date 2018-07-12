@@ -71,7 +71,7 @@ class Backdrop(threading.Thread):
     async def process(self, images):
         coros = []
         for image in images:
-            p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, capture_handler=self)
+            p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, resize=False)
             coros.append(p.process())
 
         results = await asyncio.gather(*coros)
@@ -83,7 +83,7 @@ class Backdrop(threading.Thread):
             if result is not False:
                 tmp.append(result)
 
-        # del results
+        del results
         print("Length of array after extracting None types:", len(tmp))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         await self.upload(tmp, timestamp)

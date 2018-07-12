@@ -10,7 +10,7 @@ import json
 
 class Process:
 
-    def __init__(self, img, resize=False, draw_enable=False, show_image=False, capture_handler=None):
+    def __init__(self, img, resize=False, draw_enable=False, show_image=False):
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Captured image is rgb, convert to bgr
@@ -19,7 +19,6 @@ class Process:
         self.draw_enable = draw_enable
         self.show_image = show_image
         self.resize = resize
-        self.capture_handler = capture_handler
 
     async def process(self):
         # Resize image
@@ -72,7 +71,7 @@ class Process:
         res = ImagePreProcessing.cv_resize_compress(res, max_w=1280, max_h=960)
         height, width, channels = res.shape
         b = ImagePreProcessing.convert_img2bytes(res)
-        self.capture_handler.add_overlay(img_bytes=b, size=(width, height))
+        # self.capture_handler.add_overlay(img_bytes=b, size=(width, height))
 
     def save(self, image=None):
         try:

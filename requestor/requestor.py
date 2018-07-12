@@ -29,15 +29,16 @@ class Request:
                 tmp_img = []
                 for nparray in multiple_files:
                     nparray = Process.compress(nparray)
-                    image = Image.fromarray(nparray)
-                    tmp = BytesIO()
-                    image.save(tmp, "JPEG")
-                    tmp.seek(0)
-                    data.append(('images', tmp))
-                    tmp_img.append(tmp)
+                    if nparray is not None:
+                        image = Image.fromarray(nparray)
+                        tmp = BytesIO()
+                        image.save(tmp, "JPEG")
+                        tmp.seek(0)
+                        data.append(('images', tmp))
+                        tmp_img.append(tmp)
 
-                self.logger.info("Trying image upload...")
-                return self.post(data)
+                    self.logger.info("Trying image upload...")
+                    return self.post(data)
             except Exception as e:
                 self.logger.error("Error uploading image: %s", e)
         return
