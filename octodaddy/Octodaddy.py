@@ -6,9 +6,11 @@ from time import sleep
 from Sensors.ldrTest import ldr
 from Sensors.ledFlash import flashLight
 
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
+
 import time
 import sys
+
 
 class Octodaddy:
 
@@ -26,13 +28,10 @@ class Octodaddy:
         self.camera = PiCam(self.camera_properties)
         self.backdrop_running = False
 
-        try:
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setwarnings(False)
-            self.pinpir = 22
-            GPIO.setup(self.pinpir, GPIO.IN)
-        except:
-            print("GPIO NOT FOUND")
+        # GPIO.setmode(GPIO.BCM)
+        # GPIO.setwarnings(False)
+        # self.pinpir = 22
+        # GPIO.setup(self.pinpir, GPIO.IN)
 
     def run(self):
 
@@ -61,7 +60,7 @@ class Octodaddy:
                         print("motion detected")
                         flashLight._flashLight()
                         # setting iso and shutterspeed
-                        ldrValue = 3100 # ldr.readldr()
+                        ldrValue = 3100  # ldr.readldr()
                         self.camera.adjust_camera(ldrValue)
 
                         images = []
@@ -86,7 +85,7 @@ class Octodaddy:
             except KeyboardInterrupt:
                 print("     Quit")
                 sys.exit(0)
-                #GPIO.cleanup()
+                # GPIO.cleanup()
 
     def notify_backdrop(self):
         self.backdrop_running = False
