@@ -84,7 +84,6 @@ class Backdrop(threading.Thread):
                 tmp.append(result)
 
         # del results
-
         print("Length of array after extracting None types:", len(tmp))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         await self.upload(tmp, timestamp)

@@ -9,7 +9,7 @@ from time import sleep
 # import RPi.GPIO as GPIO
 
 import time
-# import sys
+import sys
 
 
 class Octodaddy:
@@ -84,7 +84,7 @@ class Octodaddy:
 
             except KeyboardInterrupt:
                 print("     Quit")
-                # sys.exit(0)
+                sys.exit(0)
                 # GPIO.cleanup()
 
     def notify_backdrop(self):
