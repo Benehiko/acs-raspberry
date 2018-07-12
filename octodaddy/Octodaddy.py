@@ -3,13 +3,13 @@ from backdrop.backdrop import Backdrop
 from CameraHandler.piCam import PiCam
 from CameraHandler.CameraProperties import CameraProperties
 from time import sleep
-from Sensors.ldrTest import ldr
-from Sensors.ledFlash import flashLight
+# from Sensors.ldrTest import ldr
+# from Sensors.ledFlash import flashLight
 
 # import RPi.GPIO as GPIO
 
 import time
-import sys
+# import sys
 
 
 class Octodaddy:
@@ -58,7 +58,7 @@ class Octodaddy:
                     # If PIR is triggered
                     if currentstate == 1 and previousstate == 0:
                         print("motion detected")
-                        flashLight._flashLight()
+                        # flashLight._flashLight()
                         # setting iso and shutterspeed
                         ldrValue = 3100  # ldr.readldr()
                         self.camera.adjust_camera(ldrValue)
@@ -84,7 +84,7 @@ class Octodaddy:
 
             except KeyboardInterrupt:
                 print("     Quit")
-                sys.exit(0)
+                # sys.exit(0)
                 # GPIO.cleanup()
 
     def notify_backdrop(self):
