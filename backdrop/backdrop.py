@@ -76,15 +76,15 @@ class Backdrop(threading.Thread):
 
         results = await asyncio.gather(*coros)
         print("Length of array before extracting None types:", len(results))
-        results = [x for x in results if x is not False] # Keep element if it is not False
+        # results = [x for x in results if x is not False] # Keep element if it is not False
 
-        # tmp = []
-        # for result in results:
-        #     if result is not False:
-        #         tmp.append(result)
+        tmp = []
+        for result in results:
+            if result is not False:
+                tmp.append(result)
 
         # del results
 
-        print("Length of array after extracting None types:", len(results))
+        print("Length of array after extracting None types:", len(tmp))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await self.upload(results, timestamp)
+        await self.upload(tmp, timestamp)
