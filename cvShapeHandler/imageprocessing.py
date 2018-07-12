@@ -35,7 +35,6 @@ class ImagePreProcessing:
     def equaHist(img):
         # The code commented below only equalises the whole image and not piece by piece. This creates noise.
         # equ = cv2.equalizeHist(img)
-
         clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
         result = clahe.apply(img)
         return result
