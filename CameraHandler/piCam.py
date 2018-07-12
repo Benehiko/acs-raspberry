@@ -66,25 +66,25 @@ class PiCam(Camera):
             print("isoValue : " + str(lowLdr))
             print("Shutter Speed : " + str(low))
             print("low")
-        elif ldrValue > 1000 and ldrValue < 3000:
+        elif ldrValue >= 1000 and ldrValue <= 3000:
             self.camera.iso = medLowLdr
             self.camera.shutter_speed = lowmed
             print("isoValue : " + str(medLowLdr))
             print("Shutter Speed : " + str(lowmed))
             print("medlow")
-        elif ldrValue > 3000 and ldrValue < 6000:
+        elif ldrValue >= 3000 and ldrValue <= 6000:
             self.camera.iso = mediumLdr
             self.camera.shutter_speed = med
             print("isoValue : " + str(mediumLdr))
             print("Shutter Speed : " + str(med))
             print("med")
-        elif ldrValue > 6000 and ldrValue < 10000:
+        elif ldrValue >= 6000 and ldrValue <= 10000:
             self.camera.iso = medHighLdr
             self.camera.shutter_speed = medhigh
             print("isoValue : " + str(medHighLdr))
             print("Shutter Speed : " + str(medhigh))
             print("medhigh")
-        elif ldrValue > 10000:
+        elif ldrValue >= 10000:
             self.camera.iso = highLdr
             self.camera.shutter_speed = high
             print("isoValue : " + str(highLdr))

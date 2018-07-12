@@ -38,6 +38,10 @@ class Backdrop(threading.Thread):
             tasks.append(asyncio.ensure_future(self.upload(cached, timestamp), loop=self.loop))
 
         images = self.images
+
+        if self.always_save:
+            self.cache(images)
+
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
         self.loop.run_until_complete(asyncio.gather(*tasks))
         self.octodaddy.notify_backdrop()

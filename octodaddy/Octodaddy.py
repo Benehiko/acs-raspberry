@@ -26,10 +26,13 @@ class Octodaddy:
         self.camera = PiCam(self.camera_properties)
         self.backdrop_running = False
 
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        self.pinpir = 22
-        GPIO.setup(self.pinpir, GPIO.IN)
+        try:
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setwarnings(False)
+            self.pinpir = 22
+            GPIO.setup(self.pinpir, GPIO.IN)
+        except:
+            print("GPIO NOT FOUND")
 
     def run(self):
 
@@ -37,33 +40,34 @@ class Octodaddy:
 
             # Loops through the sensor infinitely to check for motion, once detected, set iso and shutter and capture images
 
-            currentstate = 0
+            currentstate = 1
             previousstate = 0
 
             try:
                 print('waiting for pir to settle...')
                 # Loop until PIR output is 0
-                while GPIO.input(self.pinpir) == 1:
-                    currentstate = 0
+                # while GPIO.input(self.pinpir) == 1:
+                #     currentstate = 0
 
                 print("    ready")
                 # Loop until user quits with control C
                 while True:
                     # Read PIR state
 
-                    currentstate = GPIO.input(self.pinpir)
+                    # currentstate = GPIO.input(self.pinpir)
 
                     # If PIR is triggered
                     if currentstate == 1 and previousstate == 0:
                         print("motion detected")
                         flashLight._flashLight()
                         # setting iso and shutterspeed
-                        ldrValue = ldr.readldr()
+                        ldrValue = 3100 # ldr.readldr()
                         self.camera.adjust_camera(ldrValue)
 
                         images = []
                         for x in range(0, 5):
                             images.append(self.camera.capture())
+                            sleep(0.3)
 
                         # Get images and pass them to backdrop
                         backdrop = Backdrop(self.app_properties, self, images=images)
@@ -77,11 +81,11 @@ class Octodaddy:
                         print("     ready")
                         previousstate = 0
 
-                    time.sleep(0.01)
+                    time.sleep(5)
 
             except KeyboardInterrupt:
                 print("     Quit")
-                GPIO.cleanup()
+                #GPIO.cleanup()
 
     def notify_backdrop(self):
         self.backdrop_running = False
