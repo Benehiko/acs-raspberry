@@ -161,7 +161,7 @@ class ImagePreProcessing:
                 tmp = ImagePreProcessing.bgr2rgb(tmp)
                 filename = datetime.datetime.now().strftime("%Y-%m-%d-%H_%M_%S")
                 if tmp is not None:
-                    cv2.imwrite('images/'+filename+'.jpg', tmp)
+                    cv2.imwrite(path+'/'+filename+'.jpg', tmp)
                 else:
                     print("Could not save none type")
             except Exception as e:
