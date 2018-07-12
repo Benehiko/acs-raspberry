@@ -17,7 +17,8 @@ class PiCam(Camera):
         self.camera_framerate = camera_properties.get_framerate()
 
         self.camera = picamera.PiCamera(sensor_mode=self.sensor, resolution=self.camera_resolution.value, framerate=self.camera_framerate)
-        self.camera.exposure_mode = "off"
+        # self.camera.exposure_mode = "off"
+        self.camera.shutter_speed = 0
         self.test_drive()
 
     @abstractmethod
@@ -29,6 +30,7 @@ class PiCam(Camera):
             self.camera.capture(rawCapture, format="rgb", use_video_port=False)
             image = rawCapture.array
             print("Image captured...")
+            print("Current exposure_speed: ", self.camera.exposure_speed)
             #rawCapture.truncate(0)
             return image
             # print("Image size: ", image.nbytes/1024, "KB")
@@ -63,31 +65,31 @@ class PiCam(Camera):
         #TODO: Call the LDR here to check the light intensity
         if ldrValue < 1000:
             self.camera.iso = lowLdr
-            self.camera.shutter_speed = low
+            # self.camera.shutter_speed = low
             print("isoValue : " + str(lowLdr))
             print("Shutter Speed : " + str(low))
             print("low")
         elif ldrValue >= 1000 and ldrValue <= 3000:
             self.camera.iso = medLowLdr
-            self.camera.shutter_speed = lowmed
+            # self.camera.shutter_speed = lowmed
             print("isoValue : " + str(medLowLdr))
             print("Shutter Speed : " + str(lowmed))
             print("medlow")
         elif ldrValue >= 3000 and ldrValue <= 6000:
             self.camera.iso = mediumLdr
-            self.camera.shutter_speed = med
+            # self.camera.shutter_speed = med
             print("isoValue : " + str(mediumLdr))
             print("Shutter Speed : " + str(med))
             print("med")
         elif ldrValue >= 6000 and ldrValue <= 10000:
             self.camera.iso = medHighLdr
-            self.camera.shutter_speed = medhigh
+            # self.camera.shutter_speed = medhigh
             print("isoValue : " + str(medHighLdr))
             print("Shutter Speed : " + str(medhigh))
             print("medhigh")
         elif ldrValue >= 10000:
             self.camera.iso = highLdr
-            self.camera.shutter_speed = high
+            # self.camera.shutter_speed = high
             print("isoValue : " + str(highLdr))
             print("Shutter Speed : " + str(high))
             print("high")
