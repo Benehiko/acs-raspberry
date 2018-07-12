@@ -29,13 +29,11 @@ class PiCam(Camera):
             self.camera.capture(rawCapture, format="bgr", use_video_port=False)
             image = rawCapture.array
             print("Image captured...")
-
+            rawCapture.truncate(0)
+            return image
             # print("Image size: ", image.nbytes/1024, "KB")
         except Exception as e:
             self.logger.error("Camera error: %s", e)
-        finally:
-            rawCapture.truncate(0)
-            return image
 
     @abstractmethod
     def test_drive(self):

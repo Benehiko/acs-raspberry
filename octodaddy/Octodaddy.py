@@ -75,7 +75,7 @@ class Octodaddy:
                         self.backdrop_running = True
                         sleep(5)
                         # record previous state of motion detector
-                        previousstate = 1
+                        previousstate = 0
                     # If the PIR has returned to ready state
                     elif currentstate == 0 and previousstate == 1:
                         print("     ready")
