@@ -152,8 +152,8 @@ class ImagePreProcessing:
         return bytes
 
     @staticmethod
-    def save(img):
-        pathlib.Path('images').mkdir(parents=False, exist_ok=True)
+    def save(img, path):
+        pathlib.Path(path).mkdir(parents=False, exist_ok=True)
         if img is not None:
             print("Saving image of", img.nbytes/10000000, "MB")
             try:

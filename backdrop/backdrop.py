@@ -53,7 +53,7 @@ class Backdrop(threading.Thread):
         if len(images) > 0:
             for image in images:
                 p = Process(img=image, resize=False, draw_enable=self.save_drawn, show_image=self.show_drawn)
-                p.save()
+                p.save("cache")
                 del p
 
     async def upload(self, images, timestamp):
@@ -63,7 +63,7 @@ class Backdrop(threading.Thread):
 
     def check_cache(self):
         cached_images = []
-        images = glob.glob("images/*.jpg")
+        images = glob.glob("cache/*.jpg")
         for image in images:
             with open(image, 'rb') as file:
                 image = Image.open(file)

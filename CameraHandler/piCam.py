@@ -76,8 +76,8 @@ class PiCam(Camera):
             print("Shutter Speed : " + str(lowmed))
             print("medlow")
         elif ldrValue >= 3000 and ldrValue <= 6000:
-            self.camera.iso = mediumLdr
-            self.camera.exposure_compensation = 15
+            self.camera.iso = 1200
+            self.camera.exposure_compensation = 23
 
             # self.camera.shutter_speed = med
             print("isoValue : " + str(mediumLdr))
