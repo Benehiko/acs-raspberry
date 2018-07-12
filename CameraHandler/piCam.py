@@ -31,7 +31,7 @@ class PiCam(Camera):
             image = rawCapture.array
             print("Image captured...")
             print("Current exposure_speed: ", self.camera.exposure_speed)
-            #rawCapture.truncate(0)
+            rawCapture.truncate(0)
             return image
             # print("Image size: ", image.nbytes/1024, "KB")
         except Exception as e:

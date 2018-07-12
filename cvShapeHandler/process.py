@@ -45,8 +45,8 @@ class Process:
 
                 # self.overlay_handler(rectangles)
                 print("Image has rectangles!")
-                jrect = self.rectangle2json(rectangles)
-                img_list = ImagePreProcessing.crop(self.img, jrect)
+                # jrect = self.rectangle2json(rectangles)
+                # img_list = ImagePreProcessing.crop(self.img, jrect)
                 return self.img
 
         return False
