@@ -103,5 +103,12 @@ class Process:
             logging.error(e)
 
     @staticmethod
+    def rgb2bgr(image):
+        try:
+            if image is not None:
+                return ImagePreProcessing.rgb2bgr(image)
+        except Exception as e:
+            logging.error(e)
+    @staticmethod
     def create_transparent_img(size=(960, 1280)):
         return ImagePreProcessing.create_img(size=size)  # Opencv prefers Height and then Width thus (h,w)

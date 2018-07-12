@@ -24,7 +24,10 @@ class Backdrop(threading.Thread):
         self.no_network = app_properties.network_status()
         self.requestor = Request(app_properties.get_post_url())
 
-        self.images = images
+        self.images = []
+        for tmp in images:
+            self.images.append(Process.rgb2bgr(tmp))
+
         self.octodaddy = octodaddy
 
     def run(self):
