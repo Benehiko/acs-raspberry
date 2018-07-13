@@ -58,8 +58,8 @@ class Request:
     def check_connectivity(self):
         conn = None
         try:
-            conn = socket.create_connection(('google.com', 8080))
-	    conn.close()
+	    conn = socket.create_connection(('google.com', 8080))
+            conn.close()
         except Exception as e:
             self.logger.log("Error contacting google server", e)
             return False           
