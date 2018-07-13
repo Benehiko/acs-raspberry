@@ -59,10 +59,9 @@ class Request:
         conn = None
         try:
             conn = socket.create_connection(('google.com', 8080))
+	    conn.close()
         except Exception as e:
             self.logger.log("Error contacting google server", e)
-            return False
-        finally:
-            conn.close()
+            return False           
 
         return True
