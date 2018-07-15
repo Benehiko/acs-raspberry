@@ -39,7 +39,7 @@ class Process:
                         img = ImageDraw.draw(img, rectangles, "Green", 10)
                     except Exception as e:
                         self.logger.error(e)
-                    Process.save("drawn", image=img)
+                    Process.save("drawn", img)
                     if self.show_image:
                         ImageDisplay.display(img)
 
@@ -74,14 +74,14 @@ class Process:
         # self.capture_handler.add_overlay(img_bytes=b, size=(width, height))
 
     @staticmethod
-    def save(self, path, image=None):
+    def save(path, image=None):
         try:
             if image is not None:
                 ImagePreProcessing.save(image, path)
             else:
                 print("Image is none")#ImagePreProcessing.save(self.img, path)
         except Exception as e:
-            self.logger.error(e)
+            logging.error(e)
 
     @staticmethod
     def compress(image):
