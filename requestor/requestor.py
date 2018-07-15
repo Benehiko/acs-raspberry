@@ -37,8 +37,8 @@ class Request:
                         data.append(('images', tmp))
                         tmp_img.append(tmp)
 
-                    self.logger.info("Trying image upload...")
-                    return self.post(data)
+                self.logger.info("Trying image upload...")
+                return self.post(data)
             except Exception as e:
                 self.logger.error("Error uploading image: %s", e)
         return

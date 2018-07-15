@@ -53,8 +53,8 @@ class Backdrop(threading.Thread):
     def cache(self, images):
         if len(images) > 0:
             for image in images:
-                p = Process(img=image, resize=False, draw_enable=self.save_drawn, show_image=self.show_drawn)
-                p.save("cache")
+                #p = Process(img=image, resize=False, draw_enable=self.save_drawn, show_image=self.show_drawn)
+                Process.save("cache", image)
 
     async def upload(self, images, timestamp):
         if len(images) > 0 and not self.no_network:

@@ -73,7 +73,7 @@ class Octodaddy:
                     self.camera.adjust_camera(ldrValue)
 
                     images = []
-                    for x in range(0, 5):
+                    for x in range(0, 3):
                         images.append(self.camera.capture())
                         sleep(0.3)
 
