@@ -33,6 +33,7 @@ class Octodaddy:
             raise Exception("Camera Properties not found")
 
         self.camera = PiCam(self.camera_properties)
+        self.camera.test_drive()
         # self.backdrop_running = False
 
         # GPIO.setmode(GPIO.BCM)
@@ -67,7 +68,7 @@ class Octodaddy:
 
                     # setting iso and shutterspeed
                     ldrValue = 1000  # ldr.readldr()
-
+                    self.camera = PiCam(self.camera_properties)
                     self.camera.adjust_camera(ldrValue)
 
                     images = []
@@ -96,5 +97,5 @@ class Octodaddy:
     def notify_backdrop(self, start_time):
         gc.collect()
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        self.logger.log("Thread started on %s finished on %s", start_time, timestamp)
+        self.logger.log("Thread started on %d finished on %s", start_time, timestamp)
         # self.backdrop_running = False

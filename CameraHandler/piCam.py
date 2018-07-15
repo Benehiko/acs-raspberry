@@ -17,7 +17,7 @@ class PiCam(Camera):
         self.camera_framerate = camera_properties.get_framerate()
 
         self.camera = picamera.PiCamera(sensor_mode=self.sensor, resolution=self.camera_resolution.value, framerate=self.camera_framerate)
-        self.test_drive()
+
 
     @abstractmethod
     def capture(self):
