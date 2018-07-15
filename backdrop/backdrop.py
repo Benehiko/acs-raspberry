@@ -1,13 +1,12 @@
 from cvShapeHandler.process import Process
 from requestor.requestor import Request
 from PIL import Image
-from io import BytesIO
 
+import os
 import threading
 import logging
 import asyncio
 import glob
-import os
 import datetime
 
 
@@ -15,6 +14,7 @@ class Backdrop(threading.Thread):
 
     def __init__(self, app_properties, octodaddy, images):
         threading.Thread.__init__(self)
+
         self.loop = None
         self.logger = logging.getLogger(self.__class__.__name__)
 
@@ -29,6 +29,7 @@ class Backdrop(threading.Thread):
         #     self.images.append(Process.rgb2bgr(tmp))
 
         self.octodaddy = octodaddy
+        self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     def run(self):
         self.loop = asyncio.new_event_loop()
@@ -47,14 +48,13 @@ class Backdrop(threading.Thread):
 
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
         self.loop.run_until_complete(asyncio.gather(*tasks, loop=self.loop))
-        self.octodaddy.notify_backdrop()
+        self.octodaddy.notify_backdrop(self.start_time)
 
     def cache(self, images):
         if len(images) > 0:
             for image in images:
                 p = Process(img=image, resize=False, draw_enable=self.save_drawn, show_image=self.show_drawn)
                 p.save("cache")
-                del p
 
     async def upload(self, images, timestamp):
         if len(images) > 0 and not self.no_network:
