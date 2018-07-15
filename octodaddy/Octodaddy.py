@@ -68,7 +68,7 @@ class Octodaddy:
                     # flashLight._flashLight()
 
                     # setting iso and shutterspeed
-                    ldrValue = 1000  # ldr.readldr()
+                    ldrValue = 3400  # ldr.readldr()
                     self.camera = PiCam(self.camera_properties)
                     self.camera.adjust_camera(ldrValue)
 
