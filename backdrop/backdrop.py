@@ -12,7 +12,7 @@ import datetime
 
 class Backdrop(threading.Thread):
 
-    def __init__(self, app_properties, octodaddy, images):
+    def __init__(self, app_properties, octodaddy):
         threading.Thread.__init__(self)
 
         self.loop = None
@@ -24,12 +24,15 @@ class Backdrop(threading.Thread):
         self.no_network = app_properties.network_status()
         self.requestor = Request(app_properties.get_post_url())
 
-        self.images = images
+        # self.images = images
         # for tmp in images:
         #     self.images.append(Process.rgb2bgr(tmp))
 
         self.octodaddy = octodaddy
         self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    def set_images(self, images):
+        self.images = images
 
     def run(self):
         self.loop = asyncio.new_event_loop()
