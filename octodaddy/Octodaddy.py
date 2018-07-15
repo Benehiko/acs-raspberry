@@ -34,6 +34,7 @@ class Octodaddy:
 
         self.camera = PiCam(self.camera_properties)
         self.camera.test_drive()
+        self.camera.close_camera()
         # self.backdrop_running = False
 
         # GPIO.setmode(GPIO.BCM)
@@ -75,6 +76,8 @@ class Octodaddy:
                     for x in range(0, 5):
                         images.append(self.camera.capture())
                         sleep(0.3)
+
+                    self.camera.close_camera()
 
                     # Get images and pass them to backdrop
                     backdrop = Backdrop(self.app_properties, self, images=images)
