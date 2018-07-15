@@ -3,10 +3,10 @@ from backdrop.backdrop import Backdrop
 from CameraHandler.piCam import PiCam
 from CameraHandler.CameraProperties import CameraProperties
 from time import sleep
-from Sensors.ldrTest import ldr
-from Sensors.ledFlash import flashLight
+# from Sensors.ldrTest import ldr
+# from Sensors.ledFlash import flashLight
 
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 
 import time
 import sys
@@ -28,10 +28,10 @@ class Octodaddy:
         self.camera = PiCam(self.camera_properties)
         self.backdrop_running = False
 
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        self.pinpir = 22
-        GPIO.setup(self.pinpir, GPIO.IN)
+        # GPIO.setmode(GPIO.BCM)
+        # GPIO.setwarnings(False)
+        # self.pinpir = 22
+        # GPIO.setup(self.pinpir, GPIO.IN)
 
     def run(self):
 
@@ -39,29 +39,29 @@ class Octodaddy:
 
             # Loops through the sensor infinitely to check for motion, once detected, set iso and shutter and capture images
 
-            currentstate = 0
+            currentstate = 1 #0
             previousstate = 0
 
             try:
                 print('waiting for pir to settle...')
                 # Loop until PIR output is 0
-                while GPIO.input(self.pinpir) == 1:
-                    currentstate = 0
+                #while GPIO.input(self.pinpir) == 1:
+                    #currentstate = 0
 
                 print("    ready")
                 # Loop until user quits with control C
                 while True:
                     # Read PIR state
 
-                    currentstate = GPIO.input(self.pinpir)
+                    #currentstate = GPIO.input(self.pinpir)
 
                     # If PIR is triggered
                     if currentstate == 1 and previousstate == 0:
                         print("motion detected")
-                        flashLight._flashLight()
+                        #flashLight._flashLight()
 
                         # setting iso and shutterspeed
-                        ldrValue = ldr.readldr()
+                        ldrValue = 1000 #ldr.readldr()
 
                         self.camera.adjust_camera(ldrValue)
 
@@ -75,7 +75,7 @@ class Octodaddy:
                         backdrop.start()
                         self.backdrop_running = True
                         # record previous state of motion detector
-                        previousstate = 1
+                        previousstate = 0 #1
                     # If the PIR has returned to ready state
                     elif currentstate == 0 and previousstate == 1:
                         print("     ready")
@@ -85,7 +85,7 @@ class Octodaddy:
 
             except KeyboardInterrupt:
                 print("     Quit")
-                GPIO.cleanup()
+                # GPIO.cleanup()
                 sys.exit(0)
 
 

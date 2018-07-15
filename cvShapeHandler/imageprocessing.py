@@ -155,13 +155,14 @@ class ImagePreProcessing:
     def save(img, path):
         pathlib.Path(path).mkdir(parents=False, exist_ok=True)
         if img is not None:
-            print("Saving image of", img.nbytes/10000000, "MB")
+            # print("Saving image of", img.nbytes/10000000, "MB")
             try:
                 tmp = ImagePreProcessing.cv_resize_compress(img)
                 tmp = ImagePreProcessing.bgr2rgb(tmp)
                 filename = datetime.datetime.now().strftime("%Y-%m-%d-%H_%M_%S")
                 if tmp is not None:
-                    cv2.imwrite(path+'/'+filename+'.jpg', tmp)
+                    d = path + "/" + filename + ".jpg"
+                    cv2.imwrite(d, tmp)
                 else:
                     print("Could not save none type")
             except Exception as e:
