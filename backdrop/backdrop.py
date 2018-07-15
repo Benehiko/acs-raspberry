@@ -12,7 +12,7 @@ import datetime
 
 class Backdrop(threading.Thread):
 
-    def __init__(self, app_properties, octodaddy):
+    def __init__(self, app_properties):
         threading.Thread.__init__(self)
 
         self.loop = None
@@ -28,7 +28,7 @@ class Backdrop(threading.Thread):
         # for tmp in images:
         #     self.images.append(Process.rgb2bgr(tmp))
 
-        self.octodaddy = octodaddy
+        #self.octodaddy = octodaddy
         self.start_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     def set_images(self, images):
@@ -51,7 +51,7 @@ class Backdrop(threading.Thread):
 
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
         self.loop.run_until_complete(asyncio.gather(*tasks, loop=self.loop))
-        self.octodaddy.notify_backdrop(self.start_time)
+        #self.octodaddy.notify_backdrop(self.start_time)
 
     def cache(self, images):
         if len(images) > 0:

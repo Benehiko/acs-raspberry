@@ -48,7 +48,7 @@ class Octodaddy:
 
         currentstate = 1  # 0
         previousstate = 0
-        backdrop = Backdrop(self.app_properties, self)
+
         try:
             print('waiting for pir to settle...')
             # Loop until PIR output is 0
@@ -78,9 +78,10 @@ class Octodaddy:
                         sleep(0.3)
 
                     self.camera.close_camera()
+                    del self.camera
 
                     # Get images and pass them to backdrop
-
+                    backdrop = Backdrop(self.app_properties)
                     backdrop.set_images(images)
                     backdrop.start()
                     # self.backdrop_running = True
@@ -91,7 +92,7 @@ class Octodaddy:
                     print("ready")
                     previousstate = 0
 
-                time.sleep(5)
+                time.sleep(60)
 
         except KeyboardInterrupt as e:
             self.logger.error(e)
