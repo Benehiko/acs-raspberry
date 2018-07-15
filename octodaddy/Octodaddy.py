@@ -99,6 +99,7 @@ class Octodaddy:
 
     def notify_backdrop(self, start_time):
         gc.collect()
-        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        self.logger.log("Thread started on %d finished on %s", start_time, timestamp)
+        end_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.logger.info("Thread started on:", start_time)
+        self.logger.info("Thread ended on:", end_time)
         # self.backdrop_running = False
