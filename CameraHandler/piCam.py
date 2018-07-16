@@ -68,7 +68,7 @@ class PiCam(Camera):
         self.camera.exposure_compensation = exposure
 
         print("ISO Value : ", iso)
-        print("Current exposure_speed: ", self.camera.exposure_speed)
+        print("Current exposure: ", exposure)
         sleep(0.5)
 
     def close_camera(self):

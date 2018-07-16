@@ -92,7 +92,7 @@ class Octodaddy:
                     print("ready")
                     previousstate = 0
 
-                time.sleep(20)
+                time.sleep(60)
 
         except KeyboardInterrupt as e:
             self.logger.error(e)
