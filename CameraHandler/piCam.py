@@ -54,6 +54,7 @@ class PiCam(Camera):
         exposure = 0
 
         if ldrValue >= 0:
+            exposure = round((ldrValue - 5000) / 200)
 
             if ldrValue <= 312:
                 iso = 50
@@ -62,7 +63,7 @@ class PiCam(Camera):
                 iso = 1600
             else:
                 iso = round(ldrValue/6.25)
-                exposure = round((ldrValue - 5000) / 200)
+
 
         self.camera.iso = iso
         self.camera.exposure_compensation = exposure
