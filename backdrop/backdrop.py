@@ -39,10 +39,10 @@ class Backdrop(threading.Thread):
         tasks = []
 
         # Check cache
-        cached = self.check_cache()
-        if len(cached) > 0:
-            timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            tasks.append(asyncio.ensure_future(self.upload(cached, timestamp), loop=self.loop))
+        # cached = self.check_cache()
+        # if len(cached) > 0:
+        #     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        #     tasks.append(asyncio.ensure_future(self.upload(cached, timestamp), loop=self.loop))
 
         images = self.images
 

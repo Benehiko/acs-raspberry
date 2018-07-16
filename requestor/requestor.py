@@ -21,7 +21,7 @@ class Request:
         if len(multiple_files) > 0:
             if not self.check_connectivity():
                 self.logger.debug("Internet may be down...caching all images just in case for later.")
-                backdrop.cache(multiple_files)
+                # backdrop.cache(multiple_files)
                 return
 
             try:
