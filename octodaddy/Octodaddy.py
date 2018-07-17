@@ -75,6 +75,9 @@ class Octodaddy:
                     # setting iso and shutterspeed
                     ldrValue = ldr.readldr()
 
+                    if ldrValue == 0:
+                        ldrValue = 1
+                        
                     change = (self.previous_ldr * 100) / ldrValue
 
                     if self.previous_ldr < 1:
