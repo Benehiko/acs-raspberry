@@ -35,6 +35,9 @@ class Octodaddy:
         self.camera = PiCam(self.camera_properties)
         self.camera.test_drive()
         self.camera.close_camera()
+
+        self.previous_ldr = 50 #ldr.readldr()
+
         # self.backdrop_running = False
 
         # GPIO.setmode(GPIO.BCM)
@@ -67,10 +70,20 @@ class Octodaddy:
                     print("motion detected")
                     # flashLight._flashLight()
 
-                    # setting iso and shutterspeed
-                    ldrValue = 300  # ldr.readldr()
                     self.camera = PiCam(self.camera_properties)
-                    self.camera.adjust_camera(ldrValue)
+
+                    # setting iso and shutterspeed
+                    ldrValue = 300 # ldr.readldr()
+
+                    change = (self.previous_ldr * 100) / ldrValue
+
+                    if self.previous_ldr < 1:
+                        self.previous_ldr = ldrValue
+                        self.camera.adjust_camera(ldrValue)
+
+                    elif change > 10:
+                        self.previous_ldr = ldrValue
+                        self.camera.adjust_camera(ldrValue)
 
                     images = []
                     for x in range(0, 3):
@@ -92,7 +105,7 @@ class Octodaddy:
                     print("ready")
                     previousstate = 0
 
-                time.sleep(60)
+                time.sleep(30)
 
         except KeyboardInterrupt as e:
             self.logger.error(e)
