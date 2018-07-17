@@ -3,10 +3,10 @@ from backdrop.backdrop import Backdrop
 from CameraHandler.piCam import PiCam
 from CameraHandler.CameraProperties import CameraProperties
 from time import sleep
-# from Sensors.ldrTest import ldr
-# from Sensors.ledFlash import flashLight
+from Sensors.ldrTest import ldr
+from Sensors.ledFlash import flashLight
 
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 import time
 import sys
@@ -40,10 +40,10 @@ class Octodaddy:
 
         # self.backdrop_running = False
 
-        # GPIO.setmode(GPIO.BCM)
-        # GPIO.setwarnings(False)
-        # self.pinpir = 22
-        # GPIO.setup(self.pinpir, GPIO.IN)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
+        self.pinpir = 27
+        GPIO.setup(self.pinpir, GPIO.IN)
 
     def run(self):
 
@@ -73,7 +73,7 @@ class Octodaddy:
                     self.camera = PiCam(self.camera_properties)
 
                     # setting iso and shutterspeed
-                    ldrValue = 300 # ldr.readldr()
+                    ldrValue = ldr.readldr()
 
                     change = (self.previous_ldr * 100) / ldrValue
 
