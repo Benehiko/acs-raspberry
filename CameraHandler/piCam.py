@@ -70,7 +70,7 @@ class PiCam(Camera):
 
         print("ISO Value : ", iso)
         print("Current exposure: ", exposure)
-        sleep(0.5)
+        sleep(2)
 
     def close_camera(self):
         self.camera.close()
