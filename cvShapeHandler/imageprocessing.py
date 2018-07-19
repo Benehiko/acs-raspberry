@@ -105,7 +105,7 @@ class ImagePreProcessing:
     @staticmethod
     def cv_resize_compress(img, max_w=1640, max_h=1232, quality=80):
         try:
-            print("DEBUG: resize the image...using shape")
+            # print("DEBUG: resize the image...using shape")
             img_h = img.shape[0]
             img_w = img.shape[1]
             new_h = img_h

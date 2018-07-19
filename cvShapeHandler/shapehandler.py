@@ -105,7 +105,7 @@ class ShapeHandler:
             return box == tmp
 
     def getAreaWidthHeight(self):
-        print("DEBUG: Getting img area with shape property")
+        # print("DEBUG: Getting img area with shape property")
         imgHeight, imgWidth, imgChannels = self.img.shape
         imgArea = (imgHeight) * (imgWidth)
         return imgArea, imgWidth, imgHeight
