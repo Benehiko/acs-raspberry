@@ -49,7 +49,7 @@ class ShapeHandler:
                 rect_area = w * h  # cv2.contourArea(pnt_array)
                 cnt_area = cv2.contourArea(cnt)
                 if cnt_area > rect_area:
-                    print("Point inside contour!")
+                    # print("Point inside contour!")
                     return True
         return False
 

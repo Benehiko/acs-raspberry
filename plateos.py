@@ -76,7 +76,7 @@ if args.camera_frame_rate is not None:
     print("Setting camera_frame_rate to ", args.camera_frame_rate)
     camera_frame_rate = args.camera_frame_rate
 else:
-    camera_frame_rate = 15
+    camera_frame_rate = 5
 
 # Setting Camera Sensor
 if args.camera_sensor is not None:
