@@ -22,7 +22,7 @@ def setup_logging(default_path='logsettings.json', default_level=logging.INFO, e
 
 url_old = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/pic/pi'
 url = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/multi/pi'
-url_local = 'http://localhost:8080/webapi/ocr/multi/pi'
+url_local = 'http://192.168.0.109:8080/webapi/ocr/multi/pi'
 
 ap = argparse.ArgumentParser(description='Plateos version 3.4')
 ap.add_argument("-u", "--url", required=False, help="enter the url to override the default url")
