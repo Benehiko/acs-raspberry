@@ -68,9 +68,9 @@ class ShapeHandler:
         p_a = (area * 100) / img_area
         p_w = w * 100 / img_width
         p_h = h * 100 / img_height
-        if 0.15 <= p_a <= 5 and p_h <= 30 and p_w <= 30:
-            if (0 >= angle >= -30 or -150 >= angle >= -180) or (0 <= angle <= 30 or 150 <= angle <= 180):
-                return True
+        if 0.15 <= p_a <= 5 and p_h <= 60 and p_w <= 60:
+            #if (0 >= angle >= -30 or -150 >= angle >= -180) or (0 <= angle <= 30 or 150 <= angle <= 180):
+            return True
         return False
 
     def getRectangles(self, contours):
