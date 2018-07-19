@@ -22,6 +22,7 @@ def setup_logging(default_path='logsettings.json', default_level=logging.INFO, e
 
 url_old = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/pic/pi'
 url = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/multi/pi'
+url_local = 'http://localhost:8080/webapi/ocr/multi/pi'
 
 ap = argparse.ArgumentParser(description='Plateos version 3.4')
 ap.add_argument("-u", "--url", required=False, help="enter the url to override the default url")
@@ -124,7 +125,7 @@ setup_logging()
 print("Setting Application Properties")
 appProperties = AppProperties(no_network=no_network, save_drawn=save_drawn, show_drawn=show_drawn,
                               always_save=save_image, camera_preview=camera_preview, capture_limit=capture_limit,
-                              post_url=url)
+                              post_url=url_local)
 print("Setting Camera Properties")
 cameraProperties = CameraProperties(sensor_mode=camera_sensor, resolution=camera_resolution, framerate=camera_frame_rate)
 octo = Octodaddy(app_properties=appProperties, camera_properties=cameraProperties)
