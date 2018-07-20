@@ -125,7 +125,7 @@ setup_logging()
 print("Setting Application Properties")
 appProperties = AppProperties(no_network=no_network, save_drawn=save_drawn, show_drawn=show_drawn,
                               always_save=save_image, camera_preview=camera_preview, capture_limit=capture_limit,
-                              post_url=url_local)
+                              post_url=url)
 print("Setting Camera Properties")
 cameraProperties = CameraProperties(sensor_mode=camera_sensor, resolution=camera_resolution, framerate=camera_frame_rate)
 octo = Octodaddy(app_properties=appProperties, camera_properties=cameraProperties)
