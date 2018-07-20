@@ -91,7 +91,7 @@ class Octodaddy:
                     images = []
                     for x in range(0, 3):
                         images.append(self.camera.capture())
-                        sleep(0.3)
+                        sleep(2)
 
                     self.camera.close_camera()
                     del self.camera
@@ -108,7 +108,7 @@ class Octodaddy:
                     print("ready")
                     previousstate = 0
 
-                time.sleep(30)
+                time.sleep(4)
 
         except KeyboardInterrupt as e:
             self.logger.error(e)
