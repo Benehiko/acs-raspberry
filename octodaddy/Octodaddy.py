@@ -73,20 +73,21 @@ class Octodaddy:
                     self.camera = PiCam(self.camera_properties)
 
                     # setting iso and shutterspeed
-                    ldrValue = ldr.readldr()
-
-                    if ldrValue == 0:
-                        ldrValue = 1
-                        
-                    change = (self.previous_ldr * 100) / ldrValue
-
-                    if self.previous_ldr < 1:
-                        self.previous_ldr = ldrValue
-                        self.camera.adjust_camera(ldrValue)
-
-                    elif change > 10:
-                        self.previous_ldr = ldrValue
-                        self.camera.adjust_camera(ldrValue)
+                    # ldrValue = ldr.readldr()
+                    #
+                    # if ldrValue == 0:
+                    #     ldrValue = 1
+                    #
+                    # change = (self.previous_ldr * 100) / ldrValue
+                    #
+                    # if self.previous_ldr < 1:
+                    #     self.previous_ldr = ldrValue
+                    #     self.camera.adjust_camera(150)
+                    #
+                    # elif change > 10:
+                    #     self.previous_ldr = ldrValue
+                    #     self.camera.adjust_camera(150)
+                    self.camera.adjust_camera(150)
 
                     images = []
                     for x in range(0, 3):
