@@ -21,7 +21,7 @@ def setup_logging(default_path='logsettings.json', default_level=logging.INFO, e
 
 
 url_old = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/pic/pi'
-url = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/multi/pi'
+url = 'http://178.128.139.92:8081/ocr/pic/pi'
 url_local = 'http://192.168.0.109:8080/webapi/ocr/multi/pi'
 
 ap = argparse.ArgumentParser(description='Plateos version 3.4')
