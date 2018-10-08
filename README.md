@@ -16,3 +16,13 @@ NumberPlate "Recognition" without extraction software to be used on the Raspberr
     python3 run.py
     
 Please refer to the [Wiki](https://github.com/Benehiko/acs-raspberry/wiki) for more information on pre-requisites
+
+## Licensing
+
+Copyright (c) The DreamTeam
+
+Copyright (c) Monash South Africa
+
+Copyright (c) Aztomix
+
+All rights reserved.
