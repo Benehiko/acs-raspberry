@@ -1,2 +1,4 @@
-# PlateosHorizon
-Automatic Number plate reader for interfacing to the OCR cloud
+## Access Control System - Raspberry
+
+Raspberry Pi code written in Python3.6 to be used at controlled entrances for automatic image uploads
+
