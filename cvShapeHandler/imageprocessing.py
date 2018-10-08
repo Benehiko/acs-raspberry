@@ -10,10 +10,31 @@ class ImagePreProcessing:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     @staticmethod
+    def crop(img, roi):
+        rectangles = roi["rectangles"]
+        for rect in rectangles:
+            roi_x = rect[0][0] * 1.05
+            roi_y = rect[0][1] * 1.05
+
+            roi_x2 = rect[1][0] * 1.05
+            roi_y2 = rect[1][1] * 1.05
+            roi_x3 = rect[2][0] * 1.05
+            roi_y3 = rect[2][1] * 1.05
+            roi_x4 = rect[3][0] * 1.05
+            roi_y4 = rect[3][1] * 1.05
+
+        # Increase roi by 5%
+        roi_x = (roi_x * 1.05)
+        roi
+        #if roi_x in img.shape[1]:
+
+
+
+
+    @staticmethod
     def equaHist(img):
         # The code commented below only equalises the whole image and not piece by piece. This creates noise.
         # equ = cv2.equalizeHist(img)
-
         clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
         result = clahe.apply(img)
         return result
@@ -48,41 +69,50 @@ class ImagePreProcessing:
     @staticmethod
     def tocanny(img, low_threshold):
         try:
-            high_threshold = low_threshold * 2
+            high_threshold = low_threshold * 3
             img_canny = cv2.Canny(img, low_threshold, high_threshold)
+            return img_canny
         except Exception as e:
             logging.error(e)
-        return img_canny
+
 
     @staticmethod
     def denoise(img, intensity, search_window, block_size):
         try:
             denoise = cv2.fastNlMeansDenoising(img, intensity, search_window, block_size)
             #Usually searchWindows is 21 and blockSize is 7
+            return denoise
         except Exception as e:
             logging.error(e)
-        return denoise
+            return None
+
 
     @staticmethod
     def blur(img, kernel_size=5, sigMaxX=0, sigMaxY=0):
         try:
             ksize = (kernel_size, kernel_size)
             blur = cv2.GaussianBlur(img, ksize, sigMaxX, sigMaxY)
+            return blur
         except Exception as e:
             logging.error(e)
-        return blur
+            return None
+
 
     @staticmethod
     def resize(img, newwidth):
         try:
             resized = imutils.resize(img, width=newwidth)
+            return resized
+
         except Exception as e:
             logging.error(e)
-        return resized
+            return None
+
 
     @staticmethod
     def cv_resize_compress(img, max_w=1640, max_h=1232, quality=80):
         try:
+            print("DEBUG: resize the image...using shape")
             img_h = img.shape[0]
             img_w = img.shape[1]
             new_h = img_h
@@ -101,13 +131,14 @@ class ImagePreProcessing:
             dist_size = (new_w, new_h)
             print("New size:", str(dist_size))
             resized = cv2.resize(img, dist_size, interpolation=cv2.INTER_AREA)
-            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 85]
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), quality]
             
             retval, buf = cv2.imencode('.jpg', resized, encode_param)
             return cv2.imdecode(buf, 1) #Flag 1 since it's colour
             
         except Exception as e:
             logging.error(e)
+            return None
 
     @staticmethod
     def create_img(size):
@@ -119,17 +150,21 @@ class ImagePreProcessing:
         bytes = cv2.imencode('.jpg', img)[1].tostring()
         return bytes
 
-    def save(self, img):
-        pathlib.Path('images').mkdir(parents=False, exist_ok=True)
+    @staticmethod
+    def save(img, path):
+        pathlib.Path(path).mkdir(parents=False, exist_ok=True)
         if img is not None:
             print("Saving image of", img.nbytes/10000000, "MB")
             try:
                 tmp = ImagePreProcessing.cv_resize_compress(img)
                 tmp = ImagePreProcessing.bgr2rgb(tmp)
                 filename = datetime.datetime.now().strftime("%Y-%m-%d-%H_%M_%S")
-                cv2.imwrite('images/'+filename+'.jpg', tmp)
+                if tmp is not None:
+                    cv2.imwrite(path+'/'+filename+'.jpg', tmp)
+                else:
+                    print("Could not save none type")
             except Exception as e:
-                self.logger.error(e)
+                logging.error(e)
 
     @staticmethod
     def rgb2bgr(img):

@@ -3,6 +3,9 @@ import requests
 import logging
 import socket
 import datetime
+from PIL import Image
+from io import BytesIO
+from cvShapeHandler.process import Process
 
 
 class Request:
@@ -22,11 +25,20 @@ class Request:
                 return
 
             try:
-                self.logger.info("Trying image upload...")
                 data = [('mac', self.mac), ('timestamp', timestamp)]
-                for file in multiple_files:
-                    data.append(('images', file))
-                return self.post(data)
+                tmp_img = []
+                for nparray in multiple_files:
+                    nparray = Process.compress(nparray)
+                    if nparray is not None:
+                        image = Image.fromarray(nparray)
+                        tmp = BytesIO()
+                        image.save(tmp, "JPEG")
+                        tmp.seek(0)
+                        data.append(('images', tmp))
+                        tmp_img.append(tmp)
+
+                    self.logger.info("Trying image upload...")
+                    return self.post(data)
             except Exception as e:
                 self.logger.error("Error uploading image: %s", e)
         return
@@ -46,11 +58,10 @@ class Request:
     def check_connectivity(self):
         conn = None
         try:
-            conn = socket.create_connection(('google.com', 8080))
+	    conn = socket.create_connection(('google.com', 8080))
+            conn.close()
         except Exception as e:
             self.logger.log("Error contacting google server", e)
-            return False
-        finally:
-            conn.close()
+            return False           
 
         return True

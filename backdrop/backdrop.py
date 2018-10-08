@@ -25,67 +25,62 @@ class Backdrop(threading.Thread):
         self.requestor = Request(app_properties.get_post_url())
 
         self.images = images
+        # for tmp in images:
+        #     self.images.append(Process.rgb2bgr(tmp))
+
         self.octodaddy = octodaddy
 
     def run(self):
         self.loop = asyncio.new_event_loop()
         tasks = []
 
-        #Check cache
+        # Check cache
         cached = self.check_cache()
         if len(cached) > 0:
             timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             tasks.append(asyncio.ensure_future(self.upload(cached, timestamp), loop=self.loop))
 
         images = self.images
+
+        if self.always_save:
+            self.cache(images)
+
         tasks.append(asyncio.ensure_future(self.process(images), loop=self.loop))
-        self.loop.run_until_complete(asyncio.gather(*tasks))
+        self.loop.run_until_complete(asyncio.gather(*tasks, loop=self.loop))
         self.octodaddy.notify_backdrop()
 
     def cache(self, images):
         if len(images) > 0:
             for image in images:
                 p = Process(img=image, resize=False, draw_enable=self.save_drawn, show_image=self.show_drawn)
-                p.save()
+                p.save("cache")
                 del p
 
     async def upload(self, images, timestamp):
-        if len(images) > 0:
-            tmp_img = []
-            for image in images:
-                tmp_img = Process.compress(image)
-                self.logger.info("Queueing image upload")
-
-            asyncio.ensure_future(self.requestor.upload_data(tmp_img, self, timestamp), loop=self.loop)
+        if len(images) > 0 and not self.no_network:
+            self.logger.info("Queueing image upload")
+            asyncio.ensure_future(self.requestor.upload_data(images, self, timestamp), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
-        images = glob.glob("images/*.jpg")
+        images = glob.glob("cache/*.jpg")
         for image in images:
             with open(image, 'rb') as file:
                 image = Image.open(file)
                 cached_images.append(image)
-                os.remove(image)
+                # os.remove(image)
         return cached_images
 
     async def process(self, images):
         coros = []
         for image in images:
-            p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, capture_handler=self)
+            p = Process(img=image, draw_enable=self.save_drawn, show_image=self.show_drawn, resize=False)
             coros.append(p.process())
 
-        results = await asyncio.gather(*coros)
+        results = await asyncio.gather(*coros, loop=self.loop)
         print("Length of array before extracting None types:", len(results))
-        # results = [x for x in results if x is not None] # Keep element if it is not None
-        tmp_images = []
-        for result in results:
-            if result is not False:
-                image = Image.fromarray(result)
-                tmp = BytesIO()
-                image.save(tmp, "JPEG")
-                tmp.seek(0)
-                tmp_images.append(result)
+        results = [x for x in results if x is not False] # Keep element if it is not False
 
-        print("Length of array after extracting None types:", len(tmp_images))
+        print("Length of array after extracting None types:", len(results))
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        await self.upload(tmp_images, timestamp)
+        await self.upload(results, timestamp)
