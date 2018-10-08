@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
 from picamera.array import PiRGBArray
 from time import sleep
+from CameraHandler.Camera import Camera
 
 import logging
 import picamera.array
-import datetime
-
-from CameraHandler.Camera import Camera
 
 
 class PiCam(Camera):
@@ -20,58 +18,59 @@ class PiCam(Camera):
 
         self.camera = picamera.PiCamera(sensor_mode=self.sensor, resolution=self.camera_resolution.value, framerate=self.camera_framerate)
 
+
     @abstractmethod
     def capture(self):
 
         rawCapture = PiRGBArray(self.camera)
         try:
             #Changing between bgr -> rgb (although opencv wants bgr)
-            self.camera.capture(rawCapture, format="rgb", use_video_port=False)
+            self.camera.capture(rawCapture, format="bgr", use_video_port=False)
             image = rawCapture.array
-
+            print("Image captured...")
+            rawCapture.truncate(0)
+            return image
             # print("Image size: ", image.nbytes/1024, "KB")
         except Exception as e:
             self.logger.error("Camera error: %s", e)
-        finally:
-            del rawCapture
-            return image
 
     @abstractmethod
     def test_drive(self):
-        for x in range(0, 3):
-            self.capture()
-            sleep(1)
+        #Warm up the camera
+        print("Warming up camera")
+        sleep(2)
+        for x in range(0, 10):
+            img = self.capture()
+            sleep(0.2)
+            del img
+        sleep(5)
 
-    def adjust_camera(self, light_intensity):
+    def adjust_camera(self, ldrValue):
 
-        now = datetime.datetime.now()
-        today6am = now.replace(hour=6, minute=0, second=0, microsecond=0)
-        today5pm = now.replace(hour=17, minute=0, second=0, microsecond=0)
+        # To get iso: LDR / 6.25
+        # To get Exposure: (ldr-5000)/200
+
+        iso = 800
+        exposure = 0
+
+        if ldrValue >= 0:
+            exposure = round((ldrValue - 5000) / 200)
+
+            if ldrValue <= 312:
+                iso = 50
+            elif ldrValue > 10000:
+                exposure = 25
+                iso = 1600
+            else:
+                iso = round(ldrValue/6.25)
 
 
-        mode = None
-        if now < today6am or now > today5pm:
-            print("Entering low light mode")
-            self.camera.shutter_speed = 1500000
-            self.camera.iso = 800
-            mode = "night"
-        else:
-            print("Day mode")
-            self.camera.shutter_speed = 800000
-            self.camera.iso = 100
-            mode = "day"
+        self.camera.iso = iso
+        self.camera.exposure_compensation = exposure
 
-        # Stepping up from night mode (worst case to best case with light)
-        if light_intensity in range(260000, 7000000):
-            # Light is low (florescent or moonlight)
-            # Set the camera to capture more light into the lense
-            self.camera.iso = 1000
-            self.camera.shutter_speed = 2500000
+        print("ISO Value : ", iso)
+        print("Current exposure: ", exposure)
+        sleep(2)
 
-        elif light_intensity >= 12000000:
-            if mode is "day":
-                self.camera.iso = 50
-                self.camera.shutter_speed = 500000
-            elif mode is "night":
-                self.camera.iso = 400
-                self.camera.shutter_speed = 1000000
+    def close_camera(self):
+        self.camera.close()

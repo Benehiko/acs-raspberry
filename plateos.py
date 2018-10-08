@@ -20,7 +20,9 @@ def setup_logging(default_path='logsettings.json', default_level=logging.INFO, e
         logging.basicConfig(level=default_level)
 
 
-url = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/pic/pi'
+url_old = 'http://104.40.251.46:8081/OcrRest/webapi/ocr/pic/pi'
+url = 'http://178.128.139.92:8081/ocr/pic/pi'
+url_local = 'http://192.168.0.109:8080/webapi/ocr/multi/pi'
 
 ap = argparse.ArgumentParser(description='Plateos version 3.4')
 ap.add_argument("-u", "--url", required=False, help="enter the url to override the default url")
@@ -74,7 +76,7 @@ if args.camera_frame_rate is not None:
     print("Setting camera_frame_rate to ", args.camera_frame_rate)
     camera_frame_rate = args.camera_frame_rate
 else:
-    camera_frame_rate = 15
+    camera_frame_rate = 5
 
 # Setting Camera Sensor
 if args.camera_sensor is not None:
