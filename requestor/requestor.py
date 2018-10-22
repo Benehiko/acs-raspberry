@@ -15,7 +15,7 @@ class Request:
 
     def __init__(self, url):
         self.url = url
-        mac = netifaces.ifaddresses('enp2s0')[netifaces.AF_LINK]
+        mac = netifaces.ifaddresses('eth0')[netifaces.AF_LINK]
         self.mac = mac[0].get('addr')
         self.logger = logging.getLogger(__name__)
 
