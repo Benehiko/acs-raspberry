@@ -1,3 +1,4 @@
+import json
 from urllib.request import urlopen
 
 import netifaces
@@ -11,34 +12,36 @@ from cvShapeHandler.process import Process
 
 
 class Request:
-    
+
     def __init__(self, url):
         self.url = url
-        mac = netifaces.ifaddresses('eth0')[netifaces.AF_LINK]
+        mac = netifaces.ifaddresses('enp2s0')[netifaces.AF_LINK]
         self.mac = mac[0].get('addr')
         self.logger = logging.getLogger(__name__)
 
     # http://docs.python-requests.org/en/latest/user/advanced/#post-multiple-multipart-encoded-files
-    async def upload_data(self, multiple_files, backdrop, timestamp):
+    async def upload_data(self, multiple_files, timestamp):
         if len(multiple_files) > 0:
             if not self.check_connectivity():
+                print("Internet down")
                 self.logger.debug("Internet may be down...caching all images just in case for later.")
                 # backdrop.cache(multiple_files)
                 return
 
             try:
                 data = [('mac', self.mac), ('timestamp', timestamp)]
-                tmp_img = []
-                for nparray in multiple_files:
-                    nparray = Process.compress(nparray)
+                counter = 0
+                for i in multiple_files:
+                    nparray = Process.compress(i)
                     if nparray is not None:
                         image = Image.fromarray(nparray)
                         tmp = BytesIO()
                         image.save(tmp, "JPEG")
                         tmp.seek(0)
-                        data.append(('images', tmp))
-                        tmp_img.append(tmp)
+                        data.append(('images', (str(counter)+'.png', tmp, 'image/png')))
+                        counter = counter + 1
 
+                print("Trying upload", data)
                 self.logger.info("Trying image upload...")
                 return self.post(data)
             except Exception as e:
@@ -49,8 +52,8 @@ class Request:
         try:
             self.logger.info("Posting data...")
             r = requests.post(self.url, files=data)
-            self.logger.info("Server response: %s", r.text)
             print(r.text)
+            self.logger.info("Server response: %s", r.text)
             print('Upload complete')
             return True
         except Exception as e:
@@ -66,4 +69,3 @@ class Request:
             pass
 
         return False
-

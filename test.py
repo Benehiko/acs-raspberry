@@ -1,28 +1,31 @@
-from cvShapeHandler.shapehandler import ShapeHandler
-from cvShapeHandler.imagedraw import ImageDraw
-from cvShapeHandler.imagedisplay import ImageDisplay
+import asyncio
+import datetime
 from requestor.requestor import Request
 
 import cv2
 import glob
 
-images = glob.glob('site/*.jpg')
-request = Request("http://localhost:8080/webapi/ocr/multi/pi")
-count = 0
 
-multi = []
+async def test():
+    images = glob.glob('site/*.jpg')
+    print(images)
+    request = Request("http://41.188.221.238:8081/ocr/pic/pi")
 
-for image in images:
-    if count == 5:
-        count = 0
-        request.upload_data(multi, "something")
-        multi.clear()
+    multi = []
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    for image in images:
+        img = cv2.imread(image)
+        multi.append(img)
 
-    img = cv2.imread(image)
-    multi.append(img)
-    count = count + 1
+    await request.upload_data(multi, timestamp)
+    multi.clear()
 
-    # s = ShapeHandler(img)
-    # rectangles = s.getRectangles(s.findcontours())
-    # ImageDraw.draw(img, rectangles, "GREEN", 5)
-    # ImageDisplay.display(img)
+        # s = ShapeHandler(img)
+        # rectangles = s.getRectangles(s.findcontours())
+        # ImageDraw.draw(img, rectangles, "GREEN", 5)
+        # ImageDisplay.display(img)
+
+
+loop = asyncio.get_event_loop()
+task = asyncio.ensure_future(test(), loop=loop)
+loop.run_until_complete(task)

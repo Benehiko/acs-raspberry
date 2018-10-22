@@ -103,7 +103,7 @@ class ImagePreProcessing:
         return resized
 
     @staticmethod
-    def cv_resize_compress(img, max_w=1640, max_h=1232, quality=80):
+    def cv_resize_compress(img, max_w=1640, max_h=1232, quality=20):
         try:
             # print("DEBUG: resize the image...using shape")
             img_h = img.shape[0]
@@ -127,7 +127,10 @@ class ImagePreProcessing:
             encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), quality]
 
             retval, buf = cv2.imencode('.jpg', resized, encode_param)
-            return cv2.imdecode(buf, 1)  # Flag 1 since it's colour
+            bgr = cv2.imdecode(buf, 1)  # Flag 1 since it's colour
+            b, g, r = cv2.split(bgr)
+            rgb = cv2.merge([r, g, b])
+            return rgb
 
         except Exception as e:
             logging.error(e)

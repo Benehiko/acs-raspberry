@@ -62,7 +62,7 @@ class Backdrop(threading.Thread):
     async def upload(self, images, timestamp):
         if len(images) > 0 and not self.no_network:
             self.logger.info("Queueing image upload")
-            asyncio.ensure_future(self.requestor.upload_data(images, self, timestamp), loop=self.loop)
+            asyncio.ensure_future(self.requestor.upload_data(images, timestamp), loop=self.loop)
 
     def check_cache(self):
         cached_images = []
