@@ -1,3 +1,5 @@
+from urllib.request import urlopen
+
 import netifaces
 import requests
 import logging
@@ -57,10 +59,10 @@ class Request:
 
     def check_connectivity(self):
         try:
-            conn = socket.create_connection(('google.com', 8080))
-            conn.close()
+            urlopen('http://google.com', timeout=3)
             return True
         except Exception as e:
+            print("Testing google ping", e)
             pass
 
         return False
