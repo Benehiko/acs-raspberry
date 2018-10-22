@@ -87,7 +87,7 @@ class Octodaddy:
                     # elif change > 10:
                     #     self.previous_ldr = ldrValue
                     #     self.camera.adjust_camera(150)
-                    self.camera.adjust_camera(150)
+                    self.camera.adjust_camera(360)
 
                     images = []
                     for x in range(0, 3):
